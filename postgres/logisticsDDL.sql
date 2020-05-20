@@ -1,5 +1,3 @@
-drop table if exists department_item, employee, item, department, job_position
-
 create table department
 (
     id      serial       not null
@@ -9,6 +7,9 @@ create table department
     name    varchar(64)  not null
 );
 
+alter table department
+    owner to postgres;
+
 create table job_position
 (
     id    serial      not null
@@ -16,27 +17,22 @@ create table job_position
             primary key,
     title varchar(64) not null
 );
+
+alter table job_position
+    owner to postgres;
+
 create table item
 (
-    id             bigserial   not null
+    product_number varchar(30) not null
         constraint item_pk
             primary key,
-    product_number varchar(30) not null,
     name           varchar(64) not null,
     description    text        not null,
     price          integer     not null
 );
 
-create table department_item
-(
-    "item_FK"       bigserial not null
-        constraint department_item_item_id_fk
-            references item,
-    "department_FK" serial    not null
-        constraint department_item_department_id_fk
-            references department,
-    qty             integer
-);
+alter table item
+    owner to postgres;
 
 create table employee
 (
@@ -53,3 +49,21 @@ create table employee
         constraint employee_department_id_fk
             references department
 );
+
+alter table employee
+    owner to postgres;
+
+create table department_item
+(
+    "item_FK"       varchar not null
+        constraint department_item_item_product_number_fk
+            references item,
+    "department_FK" integer not null
+        constraint department_item_department_id_fk
+            references department,
+    qty             integer not null
+);
+
+alter table department_item
+    owner to postgres;
+
