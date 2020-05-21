@@ -4,3 +4,7 @@ postgres/gorilla.txt
 postgres/.ipynb_checkpoints/
 
 postgres/gorilla.py
+
+Backend/.idea/
+Backend/venv/
+
