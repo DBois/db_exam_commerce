@@ -5,7 +5,7 @@
 ### Postgres:
 
 -   Create two databases. `db_exam_logistics` and `db_exam_customers`.
--   Download the DLL files [located here](https://github.com/DBois/db_exam_commerce/tree/master/postgres) and setup your databases.
+-   Download the DDL files [located here](https://github.com/DBois/db_exam_commerce/tree/master/postgres) and setup your databases.
 
 #### Setting up Logistics database
 
