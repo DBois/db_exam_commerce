@@ -18,7 +18,6 @@
 
 #### Setting up Customer database
 
--   Download [customer populate files](https://mega.nz/file/zsxBEA4J#_-argVBdIFbTbTOBVZVI9ZP1JTHcriCKWDAiSKtJZlo)
--   Download [credit card popualte files](https://mega.nz/file/qkoDwSqC#aVE4tczFr53CQDPY0MSvTZiF0KeEMBowrh8PLrEe5gI)
+-   Download [customer and credit card populate files](https://mega.nz/file/D8JF0KQT#atSCzdiMTxYXI8u_4oKXLxyKCEsFtrLvUGn_D7Hct5M)
 -   Run the customer SQL script
 -   Run the credit card sql script
