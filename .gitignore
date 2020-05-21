@@ -8,3 +8,5 @@ postgres/gorilla.py
 Backend/.idea/
 Backend/venv/
 
+
+Backend/__pycache__/
