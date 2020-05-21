@@ -11,7 +11,7 @@
 
 -   Download [populate files](https://mega.nz/file/q9xTWTqa#JVxRX6DwRztT3FtTDzIUjy8eep7rMpiEiYl2ZPqxXn4).
 -   Run `job_position_202005211245.sql`
--   Import `item_202005211344.csv`
+-   Run `item_202005211245.sql`
 -   Run `department_202005211245.sql`
 -   Run `employee_202005211245.sql`
 -   Import `department_item_202005211302.csv`
