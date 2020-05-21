@@ -7,4 +7,5 @@ postgres/gorilla.py
 
 Backend/.idea/
 Backend/venv/
+Backend/venv/__pycache__
 

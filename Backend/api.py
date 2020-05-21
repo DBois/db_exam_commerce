@@ -1,36 +1,50 @@
 # Flask dependencies
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from flask_restful import Resource, Api
+
+# Other dependencies
+import psycopg2
 
 # # Local imports
 import mongodb
 import neo4j
 import postgres
-from redis import Redis
+from redis_logic import Redis
 
 app = Flask(__name__)
 api = Api(app)
 
 
-# class Order(Resource):
-#     def post(self):
-#         user_id = request.json.get("user_id")
-#         product_no = request.json.get("product_no")
-#         qty = request.json.get("qty")
-#         redis = Redis()
-#
-#         return redis.update_shopping_cart(user_id, product_no, qty)
-#
-#     def get(self):
-#         return {'hello': 'world'}
+class Order(Resource):
+    def post(self):
+        user_id = request.json.get("user_id")
 
-class HelloWorld(Resource):
+        redis = Redis()
+        shopping_cart = redis.get_shopping_cart(user_id)
+
+
+
+        return shopping_cart
+
     def get(self):
         return {'hello': 'world'}
 
 
-api.add_resource(HelloWorld, '/')
-# api.add_resource(Order, '/order')
+class ShoppingCart(Resource):
+    def post(self):
+        user_id = request.json.get("user_id")
+        product_no = request.json.get("product_no")
+        qty = request.json.get("qty")
+
+        redis = Redis()
+
+        shopping_cart = dict(redis.update_shopping_cart(user_id, product_no, qty).items())
+
+        return shopping_cart
+
+
+api.add_resource(Order, '/order')
+api.add_resource(ShoppingCart, '/shoppingcart')
 
 if __name__ == '__main__':
     app.run(debug=True)
