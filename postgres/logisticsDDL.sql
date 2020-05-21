@@ -42,10 +42,10 @@ create table employee
     name              varchar(128) not null,
     address           varchar(255) not null,
     salary            integer      not null,
-    "job_position_FK" integer      not null
+    "job_position_fk" integer      not null
         constraint employee_job_position_id_fk
             references job_position,
-    "department_FK"   integer      not null
+    "department_fk"   integer      not null
         constraint employee_department_id_fk
             references department
 );
@@ -55,10 +55,10 @@ alter table employee
 
 create table department_item
 (
-    "item_FK"       varchar not null
+    "item_fk"       varchar not null
         constraint department_item_item_product_number_fk
             references item,
-    "department_FK" integer not null
+    "department_fk" integer not null
         constraint department_item_department_id_fk
             references department,
     qty             integer not null
