@@ -14,7 +14,7 @@
 -   Import `item_202005211344.csv`
 -   Run `department_202005211245.sql`
 -   Run `employee_202005211245.sql`
--   Import `department_item_202005211302`
+-   Import `department_item_202005211302.csv`
 
 #### Setting up Customer database
 
