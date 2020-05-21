@@ -1,4 +1,4 @@
-drop table if exists department_item, employee, job_position, department, item, restock_logfile
+drop table if exists department_item, employee, job_position, department, item, restock_logfile;
 
 create table department
 (
@@ -72,9 +72,9 @@ alter table department_item
 create table restock_logfile
 (
     department_id   integer,
-    logged_at       timestamp default CURRENT_TIMESTAMP,
     item_product_no varchar(30),
     description     text
+    logged_at       timestamp default CURRENT_TIMESTAMP,
 );
 
 alter table restock_logfile
