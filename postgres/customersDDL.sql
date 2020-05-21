@@ -17,7 +17,7 @@ create table credit_card
 (
     card_number     varchar(16) not null,
     expiration_date varchar(4)  not null,
-    "customer_FK"   bigserial   not null
+    "customer_fk"   bigserial   not null
         constraint credit_card_customer_id_fk
             references customer
 );
