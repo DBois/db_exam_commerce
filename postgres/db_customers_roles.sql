@@ -20,11 +20,6 @@ grant administrator to admin_user;
 grant readonly to readonly_user;
 grant customer_support to cs_user;
 
-
-
-
-
-
 grant connect on database db_exam_customers to administrator, readonly, customer_support;
 
 -- Admin access
