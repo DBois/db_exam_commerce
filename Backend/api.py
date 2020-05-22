@@ -4,11 +4,12 @@ from flask_restful import Resource, Api
 
 # Other dependencies
 import psycopg2
+from pprint import pprint
 
 # # Local imports
-import mongodb
+from mongodb import MongoDB
 import neo4j
-import postgres
+from postgres import Postgres
 from redis_logic import Redis
 
 app = Flask(__name__)
@@ -16,31 +17,56 @@ api = Api(app)
 
 
 class Order(Resource):
+    def __init__(self):
+        self.redis = Redis()
+        self.postgres = Postgres()
+        self.mongodb = MongoDB()
+
     def post(self):
+
+        # Get user_id and shopping_cart
         user_id = request.json.get("user_id")
+        redis_shopping_cart = self.redis.get_shopping_cart(user_id)
 
-        redis = Redis()
-        shopping_cart = redis.get_shopping_cart(user_id)
+        for item in redis_shopping_cart.items():
+            pprint(item)
 
 
+        # Fetch the items based on the shopping_cart (PSQL)
+        self.postgres.get_shopping_cart_info(user_id, redis_shopping_cart)
 
-        return shopping_cart
+        # return shopping_cart
+
+        # Fetch the user information and credit card if existing (PSQL)
+
+        # Create order on mongoDB
+
+        # Create the graph on neo4j
 
     def get(self):
         return {'hello': 'world'}
 
 
 class ShoppingCart(Resource):
+    def __init__(self):
+        self.redis = Redis()
+        self.postgres = Postgres()
+        self.mongodb = MongoDB()
+
     def post(self):
+
         user_id = request.json.get("user_id")
         product_no = request.json.get("product_no")
         qty = request.json.get("qty")
 
-        redis = Redis()
-
-        shopping_cart = dict(redis.update_shopping_cart(user_id, product_no, qty).items())
+        shopping_cart = dict(self.redis.update_shopping_cart(user_id, product_no, qty).items())
 
         return shopping_cart
+
+    def get(self):
+        user_id = request.args["user_id"]
+
+        return self.redis.get_shopping_cart(user_id)
 
 
 api.add_resource(Order, '/order')
