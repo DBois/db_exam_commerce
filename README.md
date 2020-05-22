@@ -1,7 +1,7 @@
 # Polyglot Databases
 
 ## Getting Started:
-**FIRST** [download the popualte CSV files here](https://mega.nz/file/etZGBILb#IzD50KBhRL0RELpnzY3bBVd5XI5f9_xyScI6oAdoomg) 
+**FIRST** [download the popualte CSV files here](https://mega.nz/file/ulpDTaAB#bFTNkrQzHIe-8FCUR78BQmWIV5dECRpNvJxJso9bfEw) 
 ### Postgres:
 
 -   Create two databases. `db_exam_logistics` and `db_exam_customers`.
