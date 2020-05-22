@@ -8,7 +8,7 @@ import psycopg2
 # # Local imports
 import mongodb
 import neo4j
-import postgres
+from postgres import Postgres
 from redis_logic import Redis
 
 app = Flask(__name__)
@@ -17,14 +17,16 @@ api = Api(app)
 
 class Order(Resource):
     def post(self):
+        redis = Redis()
+        postgres = Postgres()
+
         user_id = request.json.get("user_id")
 
-        redis = Redis()
-        shopping_cart = redis.get_shopping_cart(user_id)
+        redis_shopping_cart = redis.get_shopping_cart(user_id)
 
+        postgres.get_shopping_cart_info()
 
-
-        return shopping_cart
+        # return shopping_cart
 
     def get(self):
         return {'hello': 'world'}
