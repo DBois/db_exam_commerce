@@ -8,7 +8,7 @@ from pprint import pprint
 
 # # Local imports
 from mongodb import MongoDB
-import neo4j
+from neo4j_logic import Neo4j
 from postgres import Postgres
 from redis_logic import Redis
 
@@ -53,6 +53,15 @@ class ShoppingCart(Resource):
         user_id = request.args["user_id"]
 
         return redis.get_shopping_cart(user_id)
+
+
+class RecommendedItems(Resource):
+    def get(self):
+        args = request.args
+        print(args)  # For debugging
+        item_num = args['key1']
+
+
 
 
 api.add_resource(Order, '/order')
