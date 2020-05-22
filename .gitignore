@@ -13,3 +13,5 @@ Backend/venv/__pycache__/
 Backend/__pycache__/
 
 .idea/
+
+Backend/gorilla.py
