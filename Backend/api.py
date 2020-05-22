@@ -28,16 +28,12 @@ class Order(Resource):
         user_id = request.json.get("user_id")
         redis_shopping_cart = self.redis.get_shopping_cart(user_id)
 
-        for item in redis_shopping_cart.items():
-            pprint(item)
-
 
         # Fetch the items based on the shopping_cart (PSQL)
-        self.postgres.get_shopping_cart_info(user_id, redis_shopping_cart)
-
-        # return shopping_cart
+        items = self.postgres.fetch_shopping_cart_items(redis_shopping_cart)
 
         # Fetch the user information and credit card if existing (PSQL)
+
 
         # Create order on mongoDB
 
