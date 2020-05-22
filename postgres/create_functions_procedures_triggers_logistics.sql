@@ -1,7 +1,8 @@
+DROP FUNCTION IF EXISTS get_qty_of_product;
+DROP PROCEDURE IF EXISTS add_employee, remove_employee, add_existing_item_to_stock, add_new_item_to_stock;
 
 -- Functions
 
-DROP FUNCTION IF EXISTS get_qty_of_product;
 
 CREATE OR REPLACE FUNCTION get_qty_of_product(item_name varchar, item_number varchar DEFAULT '') 
  RETURNS TABLE (p_item_name varchar(64), p_item_fk varchar(30), p_department_fk int, p_qty int ) LANGUAGE plpgsql AS $$
@@ -51,6 +52,41 @@ END
 $$;
 
 -- Procedures
+
+CREATE OR REPLACE PROCEDURE add_employee(p_name varchar, p_address varchar, p_salary int, p_job_position int, p_department int) 
+	LANGUAGE plpgsql AS $$
+
+	BEGIN 
+		INSERT INTO employee (name, address, salary, job_position_fk, department_fk) 
+		VALUES (p_name, p_address, p_salary, p_job_position, p_department);
+	END
+$$;
+
+CREATE OR REPLACE PROCEDURE remove_employee(p_employee_id int) LANGUAGE plpgsql AS $$
+	BEGIN 
+		DELETE FROM employee WHERE id = p_employee_id;
+	END
+$$;
+
+
+CREATE OR REPLACE PROCEDURE add_existing_item_to_stock(p_item_number varchar, p_department_number int, p_qty int) 
+	LANGUAGE plpgsql AS $$
+	
+	BEGIN 
+		INSERT INTO department_item(item_fk, department_fk, qty) VALUES (p_item_number, p_department_number, p_qty);
+	END
+$$;
+
+
+
+CREATE OR REPLACE PROCEDURE add_new_item_to_stock(p_product_number varchar, p_name varchar, p_description TEXT, p_price int, p_department_number int, p_qty int) 
+	LANGUAGE plpgsql AS $$
+ 	
+	BEGIN
+		INSERT INTO item(product_number, name, description, price) VALUES (p_product_number, p_name, p_description, p_price);
+		INSERT INTO department_item(item_fk, department_fk, qty) VALUES (p_product_number, p_department_number, p_qty);
+ 	END
+ $$;
 
 -- Triggers
 
