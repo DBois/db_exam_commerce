@@ -26,11 +26,11 @@ class Postgres:
 
         for fetched_item in fetched_items:
             item = {
-                "product_number": fetched_item[0],
-                "name": fetched_item[1],
-                "description": fetched_item[2],
-                "price": fetched_item[3],
-                "qty": shopping_cart[fetched_item[0]]
+                "ProductNo": fetched_item[0],
+                "Name": fetched_item[1],
+                "Description": fetched_item[2],
+                "UnitPrice": fetched_item[3],
+                "Quantity": shopping_cart[fetched_item[0]]
             }
             items.append(item)
 

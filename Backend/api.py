@@ -15,27 +15,23 @@ from redis_logic import Redis
 app = Flask(__name__)
 api = Api(app)
 
+# Instantiate databases
+redis = Redis()
+postgres = Postgres()
+mongodb = MongoDB()
+
 
 class Order(Resource):
-    def __init__(self):
-        self.redis = Redis()
-        self.postgres = Postgres()
-        self.mongodb = MongoDB()
-
     def post(self):
-
         # Get user_id and shopping_cart
         user_id = request.json.get("user_id")
-        redis_shopping_cart = self.redis.get_shopping_cart(user_id)
-
+        redis_shopping_cart = redis.get_shopping_cart(user_id)
 
         # Fetch the items based on the shopping_cart (PSQL)
-        items = self.postgres.fetch_shopping_cart_items(redis_shopping_cart)
-
-        # Fetch the user information and credit card if existing (PSQL)
-
+        items = postgres.fetch_shopping_cart_items(redis_shopping_cart)
 
         # Create order on mongoDB
+        mongodb.make_order(user_id, items)
 
         # Create the graph on neo4j
 
@@ -44,25 +40,19 @@ class Order(Resource):
 
 
 class ShoppingCart(Resource):
-    def __init__(self):
-        self.redis = Redis()
-        self.postgres = Postgres()
-        self.mongodb = MongoDB()
-
     def post(self):
-
         user_id = request.json.get("user_id")
         product_no = request.json.get("product_no")
         qty = request.json.get("qty")
 
-        shopping_cart = dict(self.redis.update_shopping_cart(user_id, product_no, qty).items())
+        shopping_cart = dict(redis.update_shopping_cart(user_id, product_no, qty).items())
 
         return shopping_cart
 
     def get(self):
         user_id = request.args["user_id"]
 
-        return self.redis.get_shopping_cart(user_id)
+        return redis.get_shopping_cart(user_id)
 
 
 api.add_resource(Order, '/order')
