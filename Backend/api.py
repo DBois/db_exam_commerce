@@ -17,11 +17,21 @@ api = Api(app)
 
 class Order(Resource):
     def post(self):
-        user_id = request.json.get("user_id")
-
+        #Get user_id and shopping_cart
         redis = Redis()
+        user_id = request.json.get("user_id")
         shopping_cart = redis.get_shopping_cart(user_id)
 
+        #Fetch the items based on the shopping_cart (PSQL)
+
+
+        #Fetch the user information and credit card if existing (PSQL)
+
+
+        #Create order on mongoDB
+
+
+        #Create the graph on neo4j
 
 
         return shopping_cart
