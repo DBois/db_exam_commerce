@@ -20,3 +20,6 @@
 
 -   Download [customer and credit card populate files](https://mega.nz/file/bxRhEYIS#xKtcQruwCymRPgUBsP8XDynI2ySAOLIxQfIuVruFQtI)
 -   Import the two CSV files
+### Setting up MongoDB
+-   Download [the order CSV file](https://mega.nz/file/OgpABA7T#ZCNRxE8dKmQxkzu5pwMpZLFin5VKIKu20t8iUk8MWR4)  
+-   Run this command with your own filepath and username to populate your database and collection: `mongoimport -d db_exam_orders -c orders --type csv --file <filepath> -u <username> --authenticationDatabase admin --drop --headerline`
