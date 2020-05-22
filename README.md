@@ -5,7 +5,7 @@
 ### Postgres:
 
 -   Create two databases. `db_exam_logistics` and `db_exam_customers`.
--   Download the DLL files [located here](https://github.com/DBois/db_exam_commerce/tree/master/postgres) and setup your databases.
+-   Download the DDL files [located here](https://github.com/DBois/db_exam_commerce/tree/master/postgres) and setup your databases.
 
 #### Setting up Logistics database
 
@@ -20,3 +20,6 @@
 
 -   Download [customer and credit card populate files](https://mega.nz/file/bxRhEYIS#xKtcQruwCymRPgUBsP8XDynI2ySAOLIxQfIuVruFQtI)
 -   Import the two CSV files
+### Setting up MongoDB
+-   Download [the order CSV file](https://mega.nz/file/OgpABA7T#ZCNRxE8dKmQxkzu5pwMpZLFin5VKIKu20t8iUk8MWR4)  
+-   Run this command with your own filepath and username to populate your database and collection: `mongoimport -d db_exam_orders -c orders --type csv --file <filepath> -u <username> --authenticationDatabase admin --drop --headerline`

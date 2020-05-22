@@ -8,7 +8,7 @@ import psycopg2
 # # Local imports
 import mongodb
 import neo4j
-import postgres
+from postgres import Postgres
 from redis_logic import Redis
 
 app = Flask(__name__)
@@ -17,25 +17,22 @@ api = Api(app)
 
 class Order(Resource):
     def post(self):
-        #Get user_id and shopping_cart
         redis = Redis()
+        postgres = Postgres()
+
+        #Get user_id and shopping_cart
         user_id = request.json.get("user_id")
-        shopping_cart = redis.get_shopping_cart(user_id)
+
+        redis_shopping_cart = redis.get_shopping_cart(user_id)
 
         #Fetch the items based on the shopping_cart (PSQL)
+        postgres.get_shopping_cart_info()
 
+        # return shopping_cart
 
         #Fetch the user information and credit card if existing (PSQL)
-
-
         #Create order on mongoDB
-
-
         #Create the graph on neo4j
-
-
-        return shopping_cart
-
     def get(self):
         return {'hello': 'world'}
 
