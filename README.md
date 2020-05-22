@@ -1,7 +1,7 @@
 # Polyglot Databases
 
 ## Getting Started:
-
+**FIRST** [download the popualte CSV files here](https://mega.nz/file/etZGBILb#IzD50KBhRL0RELpnzY3bBVd5XI5f9_xyScI6oAdoomg) 
 ### Postgres:
 
 -   Create two databases. `db_exam_logistics` and `db_exam_customers`.
@@ -9,17 +9,15 @@
 
 #### Setting up Logistics database
 
--   Download [populate files](https://mega.nz/file/q9xTWTqa#JVxRX6DwRztT3FtTDzIUjy8eep7rMpiEiYl2ZPqxXn4).
--   Run `job_position_202005211245.sql`
--   Run `item_202005211245.sql`
--   Run `department_202005211245.sql`
--   Run `employee_202005211245.sql`
--   Import `department_item_202005211302.csv`
+-   Download the CSV files mentioned above
+-   Select your logistics database
+-   Import the scripts inside `Postgres\Logistics` in the order they are named.
 
 #### Setting up Customer database
 
--   Download [customer and credit card populate files](https://mega.nz/file/bxRhEYIS#xKtcQruwCymRPgUBsP8XDynI2ySAOLIxQfIuVruFQtI)
--   Import the two CSV files
+-   Download the CSV files mentioned above
+-   Select your customer database
+-   Import the scripts inside `Postgres\customer` in the order they are named.
 ### Setting up MongoDB
--   Download [the order CSV file](https://mega.nz/file/OgpABA7T#ZCNRxE8dKmQxkzu5pwMpZLFin5VKIKu20t8iUk8MWR4)  
--   Run this command with your own filepath and username to populate your database and collection: `mongoimport -d db_exam_orders -c orders --type csv --file <filepath> -u <username> --authenticationDatabase admin --drop --headerline`
+-   Download the CSV files mentioned above
+-   Run this command with your own filepath `\Mongodb\order_fixed.csv` and username to populate your database and collection: `mongoimport -d db_exam_orders -c orders --type csv --file <filepath> -u <username> --authenticationDatabase admin --drop --headerline`
