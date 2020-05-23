@@ -1,7 +1,7 @@
-DROP function IF EXISTS restock_qty cascade;
+DROP FUNCTION IF EXISTS restock_qty cascade;
 DROP TRIGGER IF EXISTS qty_couter ON department_item CASCADE;
 
-CREATE OR REPLACE FUNCTION public.restock_qty()
+CREATE OR REPLACE FUNCTION restock_qty()
  RETURNS trigger
  LANGUAGE plpgsql
 AS $function$

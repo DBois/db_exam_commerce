@@ -1,8 +1,28 @@
-DROP FUNCTION IF EXISTS get_qty_of_product;
+DROP FUNCTION IF EXISTS get_qty_of_product, restock_qty CASCADE;
 DROP PROCEDURE IF EXISTS add_employee, remove_employee, add_existing_item_to_stock, add_new_item_to_stock;
+DROP TRIGGER IF EXISTS qty_couter ON department_item;
 
 -- Functions
 
+CREATE OR REPLACE FUNCTION restock_qty() RETURNS TRIGGER 
+	LANGUAGE plpgsql AS $$
+	
+	DECLARE 
+		int_department_fk integer;
+		var_item_fk varchar;
+	
+	BEGIN 
+		SELECT department_fk, item_fk INTO int_department_fk, var_item_fk FROM department_item di WHERE di.qty <= 2;
+		UPDATE department_item SET qty = 100 WHERE item_fk = var_item_fk AND department_fk = int_department_fk;
+		
+		IF int_department_fk IS NOT NULL THEN 
+			-- logging
+			INSERT INTO restock_logfile(department_id, item_product_no, description) VALUES (int_department_fk, var_item_fk, 'Restocked');
+		END IF;
+	
+		RETURN NEW;
+	END
+$$;
 
 CREATE OR REPLACE FUNCTION get_qty_of_product(item_name varchar, item_number varchar DEFAULT '') 
  RETURNS TABLE (p_item_name varchar(64), p_item_fk varchar(30), p_department_fk int, p_qty int ) LANGUAGE plpgsql AS $$
@@ -24,8 +44,8 @@ BEGIN
 
 	END IF;
 
-END;
-$$
+END
+$$;
 
 CREATE OR REPLACE FUNCTION get_qty_of_product_in_department(item_name varchar, department_id int, item_number varchar DEFAULT '')
 	RETURNS TABLE (p_item_name varchar(64), p_item_fk varchar(30), p_department_fk int, p_qty int ) LANGUAGE plpgsql AS $$
@@ -89,8 +109,6 @@ CREATE OR REPLACE PROCEDURE add_new_item_to_stock(p_product_number varchar, p_na
  $$;
 
 -- Triggers
-
-DROP TRIGGER IF EXISTS qty_couter ON department_item CASCADE;
 
 CREATE TRIGGER qty_counter AFTER UPDATE ON department_item 
 FOR EACH ROW EXECUTE FUNCTION restock_qty();
