@@ -21,3 +21,14 @@
 ### Setting up MongoDB
 -   Download the CSV files mentioned above
 -   Run this command with your own filepath `\Mongodb\order_fixed.csv` and username to populate your database and collection: `mongoimport -d db_exam_orders -c orders --type csv --file <filepath> -u <username> --authenticationDatabase admin --drop --headerline`
+
+### Setting up Neo4j
+- Create database (we used 3.5.18)
+- Place items.csv in import folder
+- Load in csv 
+```
+LOAD CSV WITH HEADERS 
+FROM "file:///items.csv" 
+AS Line
+CREATE (c:Item {productNumber: Line.product_number, name: Line.name, price: toInteger(Line.price)})
+```
