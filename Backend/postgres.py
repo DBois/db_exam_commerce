@@ -5,7 +5,7 @@ import gorilla
 class Postgres:
     def __init__(self):
         # Define our connection string
-        conn_string = f"host='localhost' dbname='db_exam_logistics' user='postgres' password='{gorilla.password}'"
+        conn_string = f"host='localhost' dbname='db_exam_logistics' user='postgres' password='{gorilla.POSTGRES_PASSWORD}'"
 
         # print the connection string we will use to connect
         # print("Connecting to database\n	->%s" % conn_string)
@@ -19,7 +19,7 @@ class Postgres:
 
     def fetch_shopping_cart_items(self, shopping_cart):
         product_numbers = tuple(shopping_cart)
-        items = list()
+        items = []
 
         self.cursor.execute(f"SELECT * FROM item WHERE product_number in {product_numbers};")
         fetched_items = self.cursor.fetchall()
