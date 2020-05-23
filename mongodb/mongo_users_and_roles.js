@@ -10,14 +10,9 @@ db.createRole({
 });
 
 db.createRole({
+	privileges: [],
 	role: 'logisticAdmin',
-	privileges: [
-		{
-			actions: ['find', 'insert', 'update', 'remove'],
-			resource: { db: 'db_exam_orders', collection: 'orders' },
-		},
-	],
-	roles: [],
+	roles: [{ role: 'readWrite', db: 'db_exam_orders' }],
 });
 
 db.createUser({
@@ -29,5 +24,5 @@ db.createUser({
 db.createUser({
 	user: 'dboisAdmin',
 	pwd: 'dbois',
-	roles: ['customerSupport'],
+	roles: ['logisticAdmin'],
 });

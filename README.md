@@ -26,7 +26,7 @@
 -   Download the CSV files mentioned above
 -   Download [Compass](https://www.mongodb.com/products/compass)
 -   Setup your database and create a new collection
--   On the top bar press Collection -> Import Data and use the following settings:  
+-   On the top bar press Collection -> Import Data and use the following settings (**InvoiceDate: Date**):  
     ![](./img/compass_settings.png)
 
 ### Setting up Neo4j
