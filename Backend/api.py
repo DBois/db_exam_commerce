@@ -81,8 +81,16 @@ class RecommendedItems(Resource):
         print(args)  # For debugging
         item_num = args['key1']
 
+class MostPopularItems(Resource):
+    def __init__(self):
+        self.mongodb = MongoDB()
+    def post(self):
+        days = request.json.get('days');
+        return self.mongodb.generate_most_popular_products(days)
+
 
 api.add_resource(Order, '/order')
+api.add_resource(MostPopularItems, '/order/popular_products')
 api.add_resource(ShoppingCart, '/shoppingcart')
 
 if __name__ == '__main__':
