@@ -30,5 +30,5 @@
 LOAD CSV WITH HEADERS 
 FROM "file:///items.csv" 
 AS Line
-CREATE (c:Item {productNumber: Line.product_number, name: Line.name, price: toInteger(Line.price)})
+CREATE (c:Item {ProductNo: Line.product_number, Name: Line.name, Price: toInteger(Line.price)})
 ```
