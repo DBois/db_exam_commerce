@@ -21,7 +21,7 @@ class Order(Resource):
     def __init__(self):
         # Instantiate databases
         self.redis = Redis()
-        # postgres = Postgres()
+        postgres = Postgres()
         self.mongodb = MongoDB()
         self.neo4j_dao = Neo4jDAO()
 
