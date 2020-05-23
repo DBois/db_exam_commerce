@@ -7,6 +7,7 @@ from gorilla import NEO4J_PASSWORD
 
 class Neo4jDAO:
     def __init__(self):
+        # driver = GraphDatabase.driver(uri, auth=("neo4j", "password"))
         self._driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASSWORD), max_connection_lifetime=3600)
 
     def close(self):
@@ -14,15 +15,11 @@ class Neo4jDAO:
 
     def execute_create_order(self, order):
         with self._driver.session() as session:
-            tx = session.begin_transaction()
             session.write_transaction(create_order, order)
-            tx.commit()
 
     def execute_create_item(self, item):
         with self._driver.session() as session:
-            tx = session.begin_transaction()
             session.write_transaction(create_item, item)
-            tx.commit()
 
 
 def create_order(tx, order):
@@ -38,7 +35,6 @@ def create_order(tx, order):
 
     query_str = f"{query_str_match} {query_str_where} {query_str_create}"
     tx.run(query_str_create_order)
-    tx.run(query_str)
 
 
 def create_item(tx, item):

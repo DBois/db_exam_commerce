@@ -17,3 +17,7 @@ class Redis:
 
     def delete_shopping_cart(self, user_id):
         self.conn.delete(f"{user_id}_cart")
+
+    def delete_item(self, user_id, item_id):
+        deleted_item = self.conn.hdel(f"{user_id}_cart", item_id)
+        return deleted_item

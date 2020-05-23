@@ -21,7 +21,7 @@ class Order(Resource):
     def __init__(self):
         # Instantiate databases
         self.redis = Redis()
-        postgres = Postgres()
+        self.postgres = Postgres()
         self.mongodb = MongoDB()
         self.neo4j_dao = Neo4jDAO()
 
@@ -43,7 +43,6 @@ class Order(Resource):
         # Create the graph on neo4j
         pprint(order)
         self.neo4j_dao.execute_create_order(order)
-        self.neo4j_dao.close()
 
     def get(self):
         return {'hello': 'world'}
@@ -53,6 +52,9 @@ class ShoppingCart(Resource):
     def __init__(self):
         # Instantiate databases
         self.redis = Redis()
+        self.postgres = Postgres()
+        self.mongodb = MongoDB()
+        self.neo4j_dao = Neo4jDAO()
 
     def post(self):
         user_id = request.json.get("user_id")
@@ -65,8 +67,12 @@ class ShoppingCart(Resource):
 
     def get(self):
         user_id = request.args["user_id"]
-
         return self.redis.get_shopping_cart(user_id)
+
+    def delete(self):
+        user_id = request.json.get("user_id")
+        product_no = request.json.get("product_no")
+        return f"Removed {self.redis.delete_item(user_id, product_no)} item(s)"
 
 
 class RecommendedItems(Resource):

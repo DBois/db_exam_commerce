@@ -11,10 +11,10 @@ class Postgres:
         # print("Connecting to database\n	->%s" % conn_string)
 
         # get a connection, if a connect cannot be made an exception will be raised here
-        conn = psycopg2.connect(conn_string)
+        self.conn = psycopg2.connect(conn_string)
 
         # conn.cursor will return a cursor object, you can use this cursor to perform queries
-        self.cursor = conn.cursor()
+        self.cursor = self.conn.cursor()
         print("Connected!\n")
 
     def fetch_shopping_cart_items(self, shopping_cart):
@@ -34,4 +34,7 @@ class Postgres:
             }
             items.append(item)
 
+        self.conn.commit()
+        self.cursor.close()
+        self.conn.close()
         return items

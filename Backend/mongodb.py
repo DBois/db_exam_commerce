@@ -1,5 +1,4 @@
 from pymongo import MongoClient
-from utils import build_order
 
 
 class MongoDB:
@@ -9,6 +8,9 @@ class MongoDB:
     def insert_order(self, order):
         try:
             orders = self.client.db_exam_orders.orders
-            return orders.insert_one(order).inserted_id
+            inserted_id = orders.insert_one(order).inserted_id
+            self.client.close()
+            return inserted_id
+
         except:
             raise print("Something went wrong when making order on MongoDB")
