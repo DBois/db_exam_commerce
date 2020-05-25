@@ -2,7 +2,7 @@ from redis import Redis
 from settings import *
 
 
-class Redis:
+class RedisDAO:
     # def __init__(self):
     conn = Redis(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB, decode_responses=True)
 
