@@ -8,9 +8,9 @@ from pprint import pprint
 
 # # Local imports
 from mongodb import MongoDB
-from neo4j_logic import Neo4jDAO
+from neo4j_dao import Neo4jDAO
 from postgres import Postgres
-from redis_logic import Redis
+from redis_dao import RedisDAO
 from utils import build_order
 
 app = Flask(__name__)
@@ -20,7 +20,7 @@ api = Api(app)
 class Order(Resource):
     def __init__(self):
         # Instantiate databases
-        self.redis = Redis()
+        self.redis = RedisDAO()
         self.postgres = Postgres()
         self.mongodb = MongoDB()
         self.neo4j_dao = Neo4jDAO()
@@ -51,7 +51,7 @@ class Order(Resource):
 class ShoppingCart(Resource):
     def __init__(self):
         # Instantiate databases
-        self.redis = Redis()
+        self.redis = RedisDAO()
         self.postgres = Postgres()
         self.mongodb = MongoDB()
         self.neo4j_dao = Neo4jDAO()
@@ -76,13 +76,30 @@ class ShoppingCart(Resource):
 
 
 class RecommendedItems(Resource):
+    def __init__(self):
+        # Instantiate databases
+        self.neo4j_dao = Neo4jDAO()
+
+        related_items = self.neo4j_dao = Neo4jDAO()
+        
+
+
     def get(self):
-        args = request.args
-        print(args)  # For debugging
-        item_num = args['key1']
+        item_no = request.args["item_no"]
+        items = self.neo4j_dao.execute_get_related_items()
+        
+
+
+class MostPopularItems(Resource):
+    def __init__(self):
+        self.mongodb = MongoDB()
+    def post(self):
+        days = request.json.get('days');
+        return self.mongodb.generate_most_popular_products(days)
 
 
 api.add_resource(Order, '/order')
+api.add_resource(MostPopularItems, '/order/popular_products')
 api.add_resource(ShoppingCart, '/shoppingcart')
 
 if __name__ == '__main__':

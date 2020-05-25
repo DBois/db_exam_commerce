@@ -1,7 +1,9 @@
 # Polyglot Databases
 
 ## Getting Started:
-**FIRST** [download the popualte CSV files here](https://mega.nz/file/C0xVDAAK#MiTAFdhtzXrtc-Vo_mwuQfII4CIw7m0BxD3pUFh5SO0) 
+
+**FIRST** [download the popualte CSV files here](https://mega.nz/file/2w4jUBKK#TMA60vJY_zuoPhmy1_g3G5IdwDi9Ak0PIXe_oLoFIjI)
+
 ### Postgres:
 
 -   Create two databases. `db_exam_logistics` and `db_exam_customers`.
@@ -18,17 +20,24 @@
 -   Download the CSV files mentioned above
 -   Select your customer database
 -   Import the scripts inside `Postgres\customer` in the order they are named.
+
 ### Setting up MongoDB
+
 -   Download the CSV files mentioned above
--   Run this command with your own filepath `\Mongodb\order_fixed.csv` and username to populate your database and collection: `mongoimport -d db_exam_orders -c orders --type csv --file <filepath> -u <username> --authenticationDatabase admin --drop --headerline`
+-   Download [Compass](https://www.mongodb.com/products/compass)
+-   Setup your database and create a new collection
+-   On the top bar press Collection -> Import Data and use the following settings (**InvoiceDate: Date**):  
+    ![](./img/compass_settings.png)
 
 ### Setting up Neo4j
-- Create database (we used 3.5.18)
-- Place items.csv in import folder
-- Load in csv 
+
+-   Create database (we used 3.5.18)
+-   Place items.csv in import folder
+-   Load in csv
+
 ```
-LOAD CSV WITH HEADERS 
-FROM "file:///items.csv" 
+LOAD CSV WITH HEADERS
+FROM "file:///items.csv"
 AS Line
 CREATE (c:Item {ProductNo: Line.product_number, Name: Line.name, Price: toInteger(Line.price)})
 ```

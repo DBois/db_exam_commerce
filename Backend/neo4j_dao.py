@@ -21,6 +21,10 @@ class Neo4jDAO:
         with self._driver.session() as session:
             session.read_transaction(create_item, item)
 
+    def execute_get_related_items(self, item_no):
+        with self._driver.session() as session:
+            session.read_transaction(get_related_items, item_no)
+
 
 def create_order(tx, order):
     query_str_create_order = f"CREATE (a:Order {{ InvoiceNo: '{order.get('InvoiceNo')}'}})"
@@ -42,3 +46,10 @@ def create_item(tx, item):
     query_str = f"CREATE (a:Item {{ Name: '{item.get('Name')}', ProductNo: '{item.get('ProductNo')}'}}) "
     print(query_str)
     tx.run(query_str)
+
+
+def get_related_items(tx, item_no):
+    query_str = f"MATCH (i:Item)<--(:Order)-->(ii:Item) WHERE i.ProductNo = '{item_no}' " \
+                f"MATCH (ii)<-[r:contains]-(:Order) " \
+                f"return ii, COUNT(distinct r) AS count ORDER BY count DESC LIMIT 10"
+    return tx.run(query_str)
