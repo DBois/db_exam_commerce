@@ -53,7 +53,7 @@ CALL dbms.security.addRoleToUser('reader', 'reader_user');
 ```
 
 ### Setting up redis cluster
-*For this project we've used redis version 5+ which is required for using the following instructions. Otherwise go to ![Link to redis cluster tutorial](https://redis.io/topics/cluster-tutorial), see how it differs for 3+ and 4+*
+*For this project we've used redis version 5+ which is required for using the following instructions. Otherwise go to [Link to redis cluster tutorial](https://redis.io/topics/cluster-tutorial), see how it differs for 3+ and 4+*
 
 This is quick guide to how we set our redis clusters up. For further explanations read the aforementioned link.
 
@@ -77,7 +77,7 @@ cluster-config-file nodes.conf
 cluster-node-timeout 5000
 appendonly yes
 ```
-3. Download newest git repo of https://github.com/antirez/redis
+3. Download newest git repo of [Link to redis github repo](https://github.com/antirez/redis)
 ```git
 cd <file path to your redis-cluster folder>
 git clone https://github.com/antirez/redis
