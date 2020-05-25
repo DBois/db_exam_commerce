@@ -84,6 +84,9 @@ class RecommendedItems(Resource):
 class MostPopularItems(Resource):
     def __init__(self):
         self.mongodb = MongoDB()
+    def get(self):
+        # TODO: Implement this endpoint xd
+        return "TBI"
     def post(self):
         days = request.json.get('days');
         return self.mongodb.generate_most_popular_products(days)

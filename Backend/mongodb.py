@@ -30,3 +30,5 @@ class MongoDB:
             return "mostPopularProducts table created succesfully"
         except Exception as ex:
             raise ex
+
+   # def get_most_popular_products(self, days):
