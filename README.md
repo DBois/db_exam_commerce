@@ -53,7 +53,7 @@ CALL dbms.security.addRoleToUser('reader', 'reader_user');
 ```
 
 ### Setting up redis cluster
-*For this project we've used redis version 5+ which is required for using the following instructions. Otherwise go to ![Link to redis cluster tutorial](https://redis.io/topics/cluster-tutorial), see how it differs for 3+ and 4+*
+*For this project we've used redis version 5+ which is required for using the following instructions. Otherwise go to this [redis cluster tutorial](https://redis.io/topics/cluster-tutorial), see how it differs for 3+ and 4+*
 
 This is quick guide to how we set our redis clusters up. For further explanations read the aforementioned link.
 
@@ -69,7 +69,8 @@ mkdir redis-cluster
 cd redis-cluster
 mkdir 7000 7001 7002 7003 7004 7005
 ```
-2. In each of the 7000-7005 folders make a redis.conf file which consists of the following text. **REMEMBER TO UPDATE PORT  TO CORRESPONDING FOLDER YOU'RE IN**
+2. **REMEMBER TO UPDATE PORT  TO CORRESPONDING FOLDER YOU'RE IN**  
+In each of the 7000-7005 folders make a redis.conf file which consists of the following text.
 ```shell
 port 7000
 cluster-enabled yes
@@ -77,7 +78,7 @@ cluster-config-file nodes.conf
 cluster-node-timeout 5000
 appendonly yes
 ```
-3. Download newest git repo of https://github.com/antirez/redis
+3. Download newest git repo of [unstable branch of redis ](https://github.com/antirez/redis)
 ```git
 cd <file path to your redis-cluster folder>
 git clone https://github.com/antirez/redis
@@ -88,19 +89,19 @@ git clone https://github.com/antirez/redis
 ```
 sudo apt-get update
 sudo apt-get install tcl
-cd redis-unstable
+cd redis
 make
 make test
 ```
 
 5. After `make test` open a terminal in each of the 7000-7005 folders and run the following command
 ```
-../redis-unstable/src/redis-server ./redis.conf
+../redis/src/redis-server ./redis.conf
 ```
 
 6. Now you have the nodes ready to make a cluster. Run the following command to create the cluster:
 ```
-redis-cli --cluster create 127.0.0.1:7000 127.0.0.1:7001 \
-127.0.0.1:7002 127.0.0.1:7003 127.0.0.1:7004 127.0.0.1:7005 \
+redis-cli --cluster create 127.0.0.1:7000 127.0.0.1:7001 
+127.0.0.1:7002 127.0.0.1:7003 127.0.0.1:7004 127.0.0.1:7005 
 --cluster-replicas 1
 ```
