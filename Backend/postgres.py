@@ -17,6 +17,10 @@ class Postgres:
         self.cursor = self.conn.cursor()
         print("Connected!\n")
 
+    def close_connection(self):
+        self.cursor.close()
+        self.conn.close()
+
     def fetch_shopping_cart_items(self, shopping_cart):
         product_numbers = ""
         items = []
@@ -38,6 +42,23 @@ class Postgres:
             items.append(item)
 
         self.conn.commit()
-        self.cursor.close()
-        self.conn.close()
         return items
+
+    def prepare_update_item_qty(self, order):
+        query_str = "BEGIN TRANSACTION; "
+        for item in order.get('items'):
+            query_str += f"UPDATE department_item SET qty = (qty - {item.qty}) " \
+                         f"WHERE item_fk = {item.ProductNo} AND department_fk = (SELECT * FROM department_fk LIMIT 1) "
+
+        query_str + "PREPARE TRANSACTION"
+        transaction_id = self.cursor.execute(query_str)
+        return transaction_id
+
+    def commit_prepared_transaction(self, id):
+        query_str = f"COMMIT PREPARED {id}"
+        self.cursor.execute(query_str)
+
+    def rollback_prepared_transaction(self, id):
+        query_str = f"ROLLBACK PREPARED {id}"
+        self.cursor.execute(query_str)
+
