@@ -7,7 +7,7 @@
 ### Postgres:
 
 -   Create two databases. `db_exam_logistics` and `db_exam_customers`.
--   Download the DDL files [located here](https://github.com/DBois/db_exam_commerce/tree/master/postgres) and setup your databases.
+-   Download the DDL files [located here](https://github.com/DBois/db_exam_commerce/tree/master/postgres).
 
 #### Setting up Logistics database
 
@@ -31,13 +31,13 @@
 
 ### Setting up Neo4j
 
--   Create database (we used 3.5.18)
--   Place items.csv in import folder
+-   Create database (we used 3.5.17)
+-   Place 2_item.csv in import folder
 -   Load in csv
 
 ```
 LOAD CSV WITH HEADERS
-FROM "file:///items.csv"
+FROM "file:///2_item.csv"
 AS Line
 CREATE (c:Item {ProductNo: Line.product_number, Name: Line.name, Price: toInteger(Line.price)})
 ```
@@ -45,10 +45,10 @@ CREATE (c:Item {ProductNo: Line.product_number, Name: Line.name, Price: toIntege
 - In-order to set-up the users and roles execute the following commands, one by one.
 
 ```
-CALL dbms.security.createUser('admin_user', 'admin', false); 
+CALL dbms.security.createUser('admin_user', 'dbois', false); 
 CALL dbms.security.addRoleToUser('admin', 'admin_user');
 
-CALL dbms.security.createUser('reader_user', 'reader', false); 
+CALL dbms.security.createUser('reader_user', 'dbois', false); 
 CALL dbms.security.addRoleToUser('reader', 'reader_user');
 ```
 
