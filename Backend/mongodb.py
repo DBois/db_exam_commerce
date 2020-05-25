@@ -11,10 +11,9 @@ class MongoDB:
             inserted_id = orders.insert_one(order).inserted_id
             self.client.close()
             return inserted_id
-
-        except:
-            raise print("Something went wrong when making order on MongoDB")
-    
+        except Exception as ex:
+            raise ex
+            
     def generate_most_popular_products(self, days):
         try:
             map = Code("function () {"
@@ -27,8 +26,17 @@ class MongoDB:
             current_date = datetime.now()
             new_date = current_date - timedelta(days=days)
             results = self.client.db_exam_orders.orders.map_reduce(map, reduce, f"mostPopularProducts{days}", query={"InvoiceDate": {"$gte": new_date}})
+            self.client.close()
             return "mostPopularProducts table created succesfully"
         except Exception as ex:
             raise ex
 
-   # def get_most_popular_products(self, days):
+    def get_most_popular_products_30days(self):
+        try:
+            result = self.client.db_exam_orders.mostPopularProducts30.find().sort([("value", -1)]).limit(10)
+            products = [product for product in result]
+            self.client.close()
+            return products
+        except Exception as ex:
+            raise ex
+        
