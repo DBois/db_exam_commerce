@@ -51,9 +51,9 @@ class Order(Resource):
         else:
             self.postgres.rollback_prepared_transaction(mongo_id)
 
-        self.postgres.close_connection()
-
         return_order = self.mongodb.get_order(mongo_id)
+
+        self.postgres.close_connection()
         self.mongodb.close_connection()
 
         return return_order

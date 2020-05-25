@@ -25,8 +25,13 @@ class Postgres:
         product_numbers = ""
         items = []
 
+        if(len(shopping_cart) == 0):
+            raise ValueError("No items in shopping cart")
         for product_number in list(shopping_cart.keys()):
             product_numbers += f"\'{product_number}\',"
+
+
+        print("test"+ product_numbers)
 
         self.cursor.execute(f"SELECT * FROM item WHERE product_number in ({product_numbers[:-1]});")
         fetched_items = self.cursor.fetchall()
@@ -46,9 +51,11 @@ class Postgres:
 
     def prepare_update_item_qty(self, order):
         query_str = "BEGIN TRANSACTION; "
+        from pprint import pprint
         for item in order.get('items'):
-            query_str += f"UPDATE department_item SET qty = (qty - {item.qty}) " \
-                         f"WHERE item_fk = {item.ProductNo} AND department_fk = (SELECT * FROM department_fk LIMIT 1) "
+            pprint(item)
+            query_str += f"UPDATE department_item SET qty = (qty - {item['ProductNo']}) " \
+                         f"WHERE item_fk =\'{item['ProductNo']}\' AND department_fk = (SELECT id FROM department LIMIT 1); "
 
         query_str + "PREPARE TRANSACTION"
         transaction_id = self.cursor.execute(query_str)
