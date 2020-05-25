@@ -69,7 +69,8 @@ mkdir redis-cluster
 cd redis-cluster
 mkdir 7000 7001 7002 7003 7004 7005
 ```
-2. In each of the 7000-7005 folders make a redis.conf file which consists of the following text. **REMEMBER TO UPDATE PORT  TO CORRESPONDING FOLDER YOU'RE IN**
+2. **REMEMBER TO UPDATE PORT  TO CORRESPONDING FOLDER YOU'RE IN**  
+In each of the 7000-7005 folders make a redis.conf file which consists of the following text.
 ```shell
 port 7000
 cluster-enabled yes
