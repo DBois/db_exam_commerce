@@ -15,11 +15,11 @@ class Neo4jDAO:
 
     def execute_create_order(self, order):
         with self._driver.session() as session:
-            session.write_transaction(create_order, order)
+            session.read_transaction(create_order, order)
 
     def execute_create_item(self, item):
         with self._driver.session() as session:
-            session.write_transaction(create_item, item)
+            session.read_transaction(create_item, item)
 
 
 def create_order(tx, order):
@@ -35,8 +35,10 @@ def create_order(tx, order):
 
     query_str = f"{query_str_match} {query_str_where} {query_str_create}"
     tx.run(query_str_create_order)
+    tx.run(query_str)
 
 
 def create_item(tx, item):
     query_str = f"CREATE (a:Item {{ Name: '{item.get('Name')}', ProductNo: '{item.get('ProductNo')}'}}) "
+    print(query_str)
     tx.run(query_str)
