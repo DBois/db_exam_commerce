@@ -18,10 +18,13 @@ class Postgres:
         print("Connected!\n")
 
     def fetch_shopping_cart_items(self, shopping_cart):
-        product_numbers = tuple(shopping_cart)
+        product_numbers = ""
         items = []
 
-        self.cursor.execute(f"SELECT * FROM item WHERE product_number in {product_numbers};")
+        for product_number in list(shopping_cart.keys()):
+            product_numbers += f"\'{product_number}\',"
+
+        self.cursor.execute(f"SELECT * FROM item WHERE product_number in ({product_numbers[:-1]});")
         fetched_items = self.cursor.fetchall()
 
         for fetched_item in fetched_items:
