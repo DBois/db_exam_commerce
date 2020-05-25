@@ -41,3 +41,13 @@ FROM "file:///items.csv"
 AS Line
 CREATE (c:Item {ProductNo: Line.product_number, Name: Line.name, Price: toInteger(Line.price)})
 ```
+
+- In-order to set-up the users and roles execute the following commands, one by one.
+
+```
+CALL dbms.security.createUser('admin_user', 'admin', false); 
+CALL dbms.security.addRoleToUser('admin', 'admin_user');
+
+CALL dbms.security.createUser('reader_user', 'reader', false); 
+CALL dbms.security.addRoleToUser('reader', 'reader_user');
+```
