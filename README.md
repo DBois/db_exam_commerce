@@ -89,19 +89,19 @@ git clone https://github.com/antirez/redis
 ```
 sudo apt-get update
 sudo apt-get install tcl
-cd redis-unstable
+cd redis
 make
 make test
 ```
 
 5. After `make test` open a terminal in each of the 7000-7005 folders and run the following command
 ```
-../redis-unstable/src/redis-server ./redis.conf
+../redis/src/redis-server ./redis.conf
 ```
 
 6. Now you have the nodes ready to make a cluster. Run the following command to create the cluster:
 ```
-redis-cli --cluster create 127.0.0.1:7000 127.0.0.1:7001 \
-127.0.0.1:7002 127.0.0.1:7003 127.0.0.1:7004 127.0.0.1:7005 \
+redis-cli --cluster create 127.0.0.1:7000 127.0.0.1:7001 
+127.0.0.1:7002 127.0.0.1:7003 127.0.0.1:7004 127.0.0.1:7005 
 --cluster-replicas 1
 ```
