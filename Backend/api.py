@@ -37,15 +37,26 @@ class Order(Resource):
         # Build order
         order = build_order(items, user_id)
 
+        # Prepare transaction in postgres to count down qty of bought items
+        self.postgres.prepare_update_item_qty(order)
+
         # Create order on mongoDB
-        self.mongodb.insert_order(order)
+        mongo_id = self.mongodb.insert_order(order)
 
-        # Create the graph on neo4j
-        pprint(order)
-        self.neo4j_dao.execute_create_order(order)
+        # Commit/rollback transaction in postgres
+        if (mongo_id != None):
+            self.postgres.commit_prepared_transaction(mongo_id)
+            # Create the graph on neo4j
+            self.neo4j_dao.execute_create_order(order)
+        else:
+            self.postgres.rollback_prepared_transaction(mongo_id)
 
-    def get(self):
-        return {'hello': 'world'}
+        self.postgres.close_connection()
+
+        return_order = self.mongodb.get_order(mongo_id)
+        self.mongodb.close_connection()
+
+        return return_order
 
 
 class ShoppingCart(Resource):
@@ -81,20 +92,19 @@ class RecommendedItems(Resource):
         self.neo4j_dao = Neo4jDAO()
 
         related_items = self.neo4j_dao = Neo4jDAO()
-        
-
 
     def get(self):
         item_no = request.args["item_no"]
         items = self.neo4j_dao.execute_get_related_items()
-        
 
 
 class MostPopularItems(Resource):
     def __init__(self):
         self.mongodb = MongoDB()
+
     def get(self):
         return self.mongodb.get_most_popular_products_30days()
+
     def post(self):
         days = request.json.get('days');
         return self.mongodb.generate_most_popular_products(days)

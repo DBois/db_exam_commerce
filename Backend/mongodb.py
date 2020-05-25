@@ -26,7 +26,6 @@ class MongoDB:
             current_date = datetime.now()
             new_date = current_date - timedelta(days=days)
             results = self.client.db_exam_orders.orders.map_reduce(map, reduce, f"mostPopularProducts{days}", query={"InvoiceDate": {"$gte": new_date}})
-            self.client.close()
             return "mostPopularProducts table created succesfully"
         except Exception as ex:
             raise ex
@@ -35,8 +34,14 @@ class MongoDB:
         try:
             result = self.client.db_exam_orders.mostPopularProducts30.find().sort([("value", -1)]).limit(10)
             products = [product for product in result]
-            self.client.close()
             return products
         except Exception as ex:
             raise ex
-        
+
+
+    def get_order(self, id):
+        orders = self.client.db_exam_orders.orders
+        return orders.find_one({"_id":id})
+
+    def close_connection(self):
+        self.client.close()
