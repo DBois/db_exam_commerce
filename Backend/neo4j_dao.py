@@ -1,4 +1,3 @@
-
 from neo4j import GraphDatabase
 from settings import NEO4J_URI, NEO4J_USER
 from gorilla import NEO4J_PASSWORD
@@ -21,8 +20,12 @@ class Neo4jDAO:
             session.read_transaction(create_item, item)
 
     def execute_get_related_items(self, item_no):
+        related_items = []
         with self._driver.session() as session:
-            session.read_transaction(get_related_items, item_no)
+            for item in session.read_transaction(get_related_items, item_no):
+                related_items.append(dict(item[0]))
+
+        return related_items
 
 
 def create_order(tx, order):

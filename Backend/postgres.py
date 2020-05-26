@@ -52,9 +52,10 @@ class Postgres:
             query_str += f"UPDATE department_item SET qty = (qty - {item['ProductNo']}) " \
                          f"WHERE item_fk =\'{item['ProductNo']}\' AND department_fk = (SELECT id FROM department LIMIT 1); "
 
-        query_str += f"PREPARE TRANSACTION \'{order.get('InvoiceNo')}\';"
+        invoice_no = order.get('InvoiceNo')
+        query_str += f"PREPARE TRANSACTION \'{invoice_no}\';"
         self.cursor.execute(query_str)
-        return order.get('InvoiceNo')
+        return invoice_no
 
     def commit_prepared_transaction(self, transaction_id):
         query_str = f"COMMIT PREPARED '{transaction_id}';"
