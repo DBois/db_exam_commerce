@@ -13,13 +13,18 @@
 
 -   Download the CSV files mentioned above
 -   Select your logistics database
--   Import the scripts inside `Postgres\Logistics` in the order they are named.
+-   Import the scripts inside `Postgres\Logistics` in the order they are named. 
 
 #### Setting up Customer database
 
 -   Download the CSV files mentioned above
 -   Select your customer database
 -   Import the scripts inside `Postgres\customer` in the order they are named.
+
+#### Setting up Roles, Functions and Triggers
+-   Take the `db_combined_roles.sql` and copy and run, the content into a new SQL editor, to setup users and roles.
+-   Take the `create_functions_procedures_triggers_customer.sql` and copy and run, the content into a new SQL editor on the customer database.
+-   Take the `create_functions_procedures_triggers_logistics.sql` and copy and run, the content into a new SQL editor on the logistics database.
 
 ### Setting up MongoDB
 
