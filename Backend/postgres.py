@@ -59,6 +59,10 @@ class Postgres:
 
     def commit_prepared_transaction(self, transaction_id):
         query_str = f"COMMIT PREPARED '{transaction_id}';"
+        for notice in self.conn.notices:
+            if(notice.startswith('NOTICE:')):
+                print(notice)
+
         self.cursor.execute(query_str)
 
     def rollback_prepared_transaction(self, transaction_id):
