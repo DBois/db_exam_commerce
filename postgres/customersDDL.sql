@@ -21,10 +21,10 @@ create table credit_card
         primary key (card_number, expiration_date)
 );
 
-create unique index credit_card_card_number_uindex
+create index credit_card_card_number_uindex
     on credit_card (card_number);
 
-create unique index credit_card_expiration_date_uindex
+create index credit_card_expiration_date_uindex
     on credit_card (expiration_date);
 
 create table customer_credit_card
