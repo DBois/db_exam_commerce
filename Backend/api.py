@@ -38,25 +38,26 @@ class Order(Resource):
         order = build_order(items, user_id)
 
         # Prepare transaction in postgres to count down qty of bought items
-        self.postgres.prepare_update_item_qty(order)
+        transaction_id = self.postgres.prepare_update_item_qty(order)
 
         # Create order on mongoDB
         mongo_id = self.mongodb.insert_order(order)
 
         # Commit/rollback transaction in postgres
-        if (mongo_id != None):
-            self.postgres.commit_prepared_transaction(mongo_id)
+        if mongo_id:
+            self.postgres.commit_prepared_transaction(transaction_id)
             # Create the graph on neo4j
             self.neo4j_dao.execute_create_order(order)
+            self.redis.delete_shopping_cart(user_id)
         else:
-            self.postgres.rollback_prepared_transaction(mongo_id)
+            self.postgres.rollback_prepared_transaction(transaction_id)
 
         return_order = self.mongodb.get_order(mongo_id)
 
         self.postgres.close_connection()
         self.mongodb.close_connection()
 
-        return return_order
+        return jsonify(return_order)
 
 
 class ShoppingCart(Resource):

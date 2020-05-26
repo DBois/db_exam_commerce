@@ -50,22 +50,23 @@ class Postgres:
         return items
 
     def prepare_update_item_qty(self, order):
-        query_str = "BEGIN TRANSACTION; "
+        query_str = "BEGIN; "
         from pprint import pprint
         for item in order.get('items'):
             pprint(item)
             query_str += f"UPDATE department_item SET qty = (qty - {item['ProductNo']}) " \
                          f"WHERE item_fk =\'{item['ProductNo']}\' AND department_fk = (SELECT id FROM department LIMIT 1); "
 
-        query_str + "PREPARE TRANSACTION"
-        transaction_id = self.cursor.execute(query_str)
-        return transaction_id
+        query_str += f"PREPARE TRANSACTION \'{order.get('InvoiceNo')}\';"
+        print(order.get('InvoiceNo'))
+        self.cursor.execute(query_str)
+        return order.get('InvoiceNo')
 
-    def commit_prepared_transaction(self, id):
-        query_str = f"COMMIT PREPARED {id}"
+    def commit_prepared_transaction(self, transaction_id):
+        query_str = f"COMMIT PREPARED '{transaction_id}';"
         self.cursor.execute(query_str)
 
-    def rollback_prepared_transaction(self, id):
-        query_str = f"ROLLBACK PREPARED {id}"
+    def rollback_prepared_transaction(self, transaction_id):
+        query_str = f"ROLLBACK PREPARED '{transaction_id}';"
         self.cursor.execute(query_str)
 
