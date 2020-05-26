@@ -1,4 +1,3 @@
-from pprint import pprint
 
 from neo4j import GraphDatabase
 from settings import NEO4J_URI, NEO4J_USER
@@ -44,7 +43,6 @@ def create_order(tx, order):
 
 def create_item(tx, item):
     query_str = f"CREATE (a:Item {{ Name: '{item.get('Name')}', ProductNo: '{item.get('ProductNo')}'}}) "
-    print(query_str)
     tx.run(query_str)
 
 

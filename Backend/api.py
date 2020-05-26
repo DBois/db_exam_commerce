@@ -4,7 +4,6 @@ from flask_restful import Resource, Api
 
 # Other dependencies
 import psycopg2
-from pprint import pprint
 
 # # Local imports
 from mongodb import MongoDB
@@ -28,7 +27,6 @@ class Order(Resource):
     def post(self):
         # Get user_id and shopping_cart
         user_id = request.json.get("user_id")
-        print(f"user_id: {user_id}")
         redis_shopping_cart = self.redis.get_shopping_cart(user_id)
 
         # Fetch the items based on the shopping_cart (PSQL)
@@ -53,11 +51,12 @@ class Order(Resource):
             self.postgres.rollback_prepared_transaction(transaction_id)
 
         return_order = self.mongodb.get_order(mongo_id)
+        del return_order['_id']
 
         self.postgres.close_connection()
         self.mongodb.close_connection()
 
-        return jsonify(return_order)
+        return return_order
 
 
 class ShoppingCart(Resource):
