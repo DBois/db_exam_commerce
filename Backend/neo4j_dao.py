@@ -23,7 +23,7 @@ class Neo4jDAO:
         related_items = []
         with self._driver.session() as session:
             for item in session.read_transaction(get_related_items, item_no):
-                related_items.append(dict(item[0]))
+                related_items.append(item[0])
 
         return related_items
 
@@ -52,5 +52,5 @@ def create_item(tx, item):
 def get_related_items(tx, item_no):
     query_str = f"MATCH (i:Item)<--(:Order)-->(ii:Item) WHERE i.ProductNo = '{item_no}' " \
                 f"MATCH (ii)<-[r:contains]-(:Order) " \
-                f"return ii, COUNT(distinct r) AS count ORDER BY count DESC LIMIT 10"
+                f"return properties(ii), COUNT(distinct r) AS count ORDER BY count DESC LIMIT 10"
     return tx.run(query_str)
