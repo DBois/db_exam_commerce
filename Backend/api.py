@@ -3,8 +3,6 @@ from flask import Flask, request, jsonify
 from flask_restful import Resource, Api
 
 # Other dependencies
-import psycopg2
-from pprint import pprint
 
 # # Local imports
 from mongodb import MongoDB
@@ -28,7 +26,6 @@ class Order(Resource):
     def post(self):
         # Get user_id and shopping_cart
         user_id = request.json.get("user_id")
-        print(f"user_id: {user_id}")
         redis_shopping_cart = self.redis.get_shopping_cart(user_id)
 
         # Fetch the items based on the shopping_cart (PSQL)
@@ -38,22 +35,25 @@ class Order(Resource):
         order = build_order(items, user_id)
 
         # Prepare transaction in postgres to count down qty of bought items
-        self.postgres.prepare_update_item_qty(order)
+        transaction_id = self.postgres.prepare_update_item_qty(order)
 
         # Create order on mongoDB
         mongo_id = self.mongodb.insert_order(order)
 
         # Commit/rollback transaction in postgres
-        if (mongo_id != None):
-            self.postgres.commit_prepared_transaction(mongo_id)
+        if mongo_id:
+            self.postgres.commit_prepared_transaction(transaction_id)
+            # Delete shoppingcart in redis
+            self.redis.delete_shopping_cart(user_id)
             # Create the graph on neo4j
             self.neo4j_dao.execute_create_order(order)
         else:
-            self.postgres.rollback_prepared_transaction(mongo_id)
-
-        self.postgres.close_connection()
+            self.postgres.rollback_prepared_transaction(transaction_id)
 
         return_order = self.mongodb.get_order(mongo_id)
+        del return_order['_id']
+
+        self.postgres.close_connection()
         self.mongodb.close_connection()
 
         return return_order
@@ -91,11 +91,10 @@ class RecommendedItems(Resource):
         # Instantiate databases
         self.neo4j_dao = Neo4jDAO()
 
-        related_items = self.neo4j_dao = Neo4jDAO()
-
     def get(self):
         item_no = request.args["item_no"]
-        items = self.neo4j_dao.execute_get_related_items()
+        items = self.neo4j_dao.execute_get_related_items(item_no)
+        return jsonify(items)
 
 
 class MostPopularItems(Resource):
@@ -113,6 +112,7 @@ class MostPopularItems(Resource):
 api.add_resource(Order, '/order')
 api.add_resource(MostPopularItems, '/order/popular_products')
 api.add_resource(ShoppingCart, '/shoppingcart')
+api.add_resource(RecommendedItems, '/recommendeditems')
 
 if __name__ == '__main__':
     app.run(debug=True)

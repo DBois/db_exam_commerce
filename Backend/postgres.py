@@ -25,6 +25,8 @@ class Postgres:
         product_numbers = ""
         items = []
 
+        if len(shopping_cart) == 0:
+            raise ValueError("No items in shopping cart")
         for product_number in list(shopping_cart.keys()):
             product_numbers += f"\'{product_number}\',"
 
@@ -45,20 +47,24 @@ class Postgres:
         return items
 
     def prepare_update_item_qty(self, order):
-        query_str = "BEGIN TRANSACTION; "
+        query_str = "BEGIN; "
         for item in order.get('items'):
-            query_str += f"UPDATE department_item SET qty = (qty - {item.qty}) " \
-                         f"WHERE item_fk = {item.ProductNo} AND department_fk = (SELECT * FROM department_fk LIMIT 1) "
+            query_str += f"UPDATE department_item SET qty = (qty - {item['ProductNo']}) " \
+                         f"WHERE item_fk =\'{item['ProductNo']}\' AND department_fk = (SELECT id FROM department LIMIT 1); "
 
-        query_str + "PREPARE TRANSACTION"
-        transaction_id = self.cursor.execute(query_str)
-        return transaction_id
+        invoice_no = order.get('InvoiceNo')
+        query_str += f"PREPARE TRANSACTION \'{invoice_no}\';"
+        self.cursor.execute(query_str)
+        return invoice_no
 
-    def commit_prepared_transaction(self, id):
-        query_str = f"COMMIT PREPARED {id}"
+    def commit_prepared_transaction(self, transaction_id):
+        query_str = f"COMMIT PREPARED '{transaction_id}';"
+        for notice in self.conn.notices:
+            if(notice.startswith('NOTICE:')):
+                print(notice)
+
         self.cursor.execute(query_str)
 
-    def rollback_prepared_transaction(self, id):
-        query_str = f"ROLLBACK PREPARED {id}"
+    def rollback_prepared_transaction(self, transaction_id):
+        query_str = f"ROLLBACK PREPARED '{transaction_id}';"
         self.cursor.execute(query_str)
-

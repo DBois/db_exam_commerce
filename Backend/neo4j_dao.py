@@ -1,5 +1,3 @@
-from pprint import pprint
-
 from neo4j import GraphDatabase
 from settings import NEO4J_URI, NEO4J_USER
 from gorilla import NEO4J_PASSWORD
@@ -22,8 +20,12 @@ class Neo4jDAO:
             session.read_transaction(create_item, item)
 
     def execute_get_related_items(self, item_no):
+        related_items = []
         with self._driver.session() as session:
-            session.read_transaction(get_related_items, item_no)
+            for item in session.read_transaction(get_related_items, item_no):
+                related_items.append(item[0])
+
+        return related_items
 
 
 def create_order(tx, order):
@@ -44,12 +46,11 @@ def create_order(tx, order):
 
 def create_item(tx, item):
     query_str = f"CREATE (a:Item {{ Name: '{item.get('Name')}', ProductNo: '{item.get('ProductNo')}'}}) "
-    print(query_str)
     tx.run(query_str)
 
 
 def get_related_items(tx, item_no):
     query_str = f"MATCH (i:Item)<--(:Order)-->(ii:Item) WHERE i.ProductNo = '{item_no}' " \
                 f"MATCH (ii)<-[r:contains]-(:Order) " \
-                f"return ii, COUNT(distinct r) AS count ORDER BY count DESC LIMIT 10"
+                f"return properties(ii), COUNT(distinct r) AS count ORDER BY count DESC LIMIT 10"
     return tx.run(query_str)
