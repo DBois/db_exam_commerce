@@ -23,7 +23,7 @@ class Neo4jDAO:
         related_items = []
         with self._driver.session() as session:
             for item in session.read_transaction(get_related_items, item_no):
-                related_items.append(item[0])
+                related_items.append(item[0]) # item[0] is item, item[1] is count
 
         return related_items
 

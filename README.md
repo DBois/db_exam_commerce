@@ -2,7 +2,7 @@
 
 ## Getting Started:
 
-**FIRST** [download the popualte CSV files here](https://mega.nz/file/msgFXCbL#63lEoxsXYK3GLsnmMUvU4Lu6rVXh6o6dL-H_a4NZLmM)
+**FIRST** [download the populate CSV files here](https://mega.nz/file/msgFXCbL#63lEoxsXYK3GLsnmMUvU4Lu6rVXh6o6dL-H_a4NZLmM)
 
 ### Postgres:
 
