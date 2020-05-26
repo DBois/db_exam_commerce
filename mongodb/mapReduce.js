@@ -1,13 +1,11 @@
 db.orders.mapReduce(
 	function () {
 		const products = this.Products;
-
 		products.forEach((product) => {
 			emit(product.ProductNo, product.Quantity);
 		});
 	},
 	function (key, values) {
-		// Could just use values.length to get count
 		return Array.sum(values);
 	},
 	{
