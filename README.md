@@ -4,7 +4,7 @@
 
 **FIRST** [download the populate CSV files here](https://mega.nz/file/msgFXCbL#63lEoxsXYK3GLsnmMUvU4Lu6rVXh6o6dL-H_a4NZLmM)
 
-### Postgres:
+### Setting up Postgres:
 
 -   Create two databases. `db_exam_logistics` and `db_exam_customers`.
 -   Download the DDL files [located here](https://github.com/DBois/db_exam_commerce/tree/master/postgres).
@@ -214,3 +214,30 @@ Default url: localhost:5000
     <td>Retrieves a list of the 10 most bought items someone has bought with the item you send inn</td>
   </tr>
 </table> 
+
+
+## Users
+
+### Postgres
+
+| Username     | Password | Description |
+| ----------- | ----------- | ----------- |
+| admin_user      | admin      | Has all Privilages on all tables and sequences |
+| read_only_user   | readonly        | Can select on all tables |
+| cs_user | cs | **Customer Support:**<br> Can insert, select and update on all tables in customer<br> Can select on item table<br>  Can select on restock logfile | 
+| hr_user   | hr        | **Human Resources:**<br> Can select on department table<br> Has all privilages on employee and job table |
+| dm_user   | dm       | **Department Manager:**<br> Has all privilages on department item table<br> Can select and update on department table<br> Can insert and select on item table<br> Can select on restock logfile table|
+
+
+Username: admin_user Password: admin
+Username: read_only_user Password: readonly
+Username: cs_user Password: cs
+Username: hr_user Password: hr
+Username: dm_user Password: dm
+
+
+### Mongo
+
+### Neo4j
+
+### Redis

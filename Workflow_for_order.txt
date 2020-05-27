@@ -1,5 +1,5 @@
 @startuml
-actor "Minion #561"
+actor Actor
 collections Backend
 database Redis
 database PostgreSQL
@@ -7,35 +7,44 @@ database MongoDB
 database Neo4j
 title : Workflow for Selecting and Confirming an Order
 
-activate "Minion #561"
-loop Until user clicks confirm order
-"Minion #561" -> Backend : Looks at a specific item
+activate Actor
+loop Until user clicks "confirm order"
+Actor -> Backend : Looks at a specific item
 
 
 activate Backend
 Backend -> Neo4j : Request recommended items
 activate Neo4j
-Neo4j -> "Minion #561" : Resonse with recommended \nitems
+Neo4j -> Actor : Response with recommended \nitems
 deactivate Neo4j
 
-"Minion #561" -> Backend : User clicks "add to cart"
+Actor -> Backend : User clicks "add to cart"
 
 Backend -> Redis : The given item is added to cart
 activate Redis
 
 Redis -> Backend : Sends items from \ncart to backend
 end
+deactivate Redis
+deactivate Backend
 
-"Minion #561" -> Backend : User clicks on \n"view shopping cart"
+Actor -> Backend : User clicks on \n"view shopping cart"
+activate Backend
 
-Backend -> PostgreSQL : Requests information on \nproduct number(s) from PostgreSQL
+Backend -> PostgreSQL : Requests information on product \nnumber(s) from PostgreSQL
 
 activate PostgreSQL
-PostgreSQL -> Backend : Resonse with all information \nabout given item(s)
+PostgreSQL -> Backend : Response with all information \nabout given item(s)
 deactivate PostgreSQL
 
-Backend -> "Minion #561" : User see confirm orderpage
-"Minion #561" -> Backend: User clicks "confirm order"
+Backend -> Actor : User sees confirm orderpage
+deactivate Backend
+Actor -> Backend: User clicks "confirm order"
+activate Backend
+
+Backend -> Redis : Fetches users session data from cart
+activate Redis
+Redis -> Backend : Returns users session data
 
 group Two-Phased Commit
 Backend -> PostgreSQL : Prepares transaction to <b>update \n<b>quantity</b> on affected item(s)
@@ -60,8 +69,8 @@ activate Neo4j
 Neo4j -> Backend : Success
 deactivate Neo4j
 
-Backend -> "Minion #561" : Sends order confirmation \nto user
+Backend -> Actor : Sends order confirmation \nto user
 
 deactivate Backend
-deactivate "Minion #561"
+deactivate Actor
 @enduml
