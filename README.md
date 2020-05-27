@@ -228,14 +228,6 @@ Default url: localhost:5000
 | hr_user   | hr        | **Human Resources:**<br> Can select on department table<br> Has all privilages on employee and job table |
 | dm_user   | dm       | **Department Manager:**<br> Has all privilages on department item table<br> Can select and update on department table<br> Can insert and select on item table<br> Can select on restock logfile table|
 
-
-Username: admin_user Password: admin
-Username: read_only_user Password: readonly
-Username: cs_user Password: cs
-Username: hr_user Password: hr
-Username: dm_user Password: dm
-
-
 ### Mongo
 
 ### Neo4j
