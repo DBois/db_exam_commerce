@@ -1,79 +1,3 @@
-## Endpoint documentation
-Default url: localhost:5000
-
-### /shopping_cart
- <table style="width:100%">
-  <tr>
-    <th></th>
-    <th>Required body</th>
-    <th>URL params</th>
-    <th>Description</th>
-  </tr>
-  <tr>
-    <td>GET</td>
-    <td></td>
-    <td>?user_id=userid123</td>
-    <td>Get shoppingcart based on user ID</td>
-  </tr>
-  <tr>
-    <td>POST</td>
-    <td>{user_id:"userid123",<br/>product_no:"00004",<br/>qty:4}</td>
-    <td></td>
-    <td>Adds item/product to shopping cart</td>
-  </tr>
-  <tr>
-    <td>DELETE</td>
-    <td>{user_id:"userid123",<br/>product_no:"00004"}</td>
-    <td></td>
-    <td>Deletes item/product in shopping cart</td>
-  </tr>
-</table> 
-
-
-### /order
- <table style="width:100%">
-  <tr>
-    <th></th>
-    <th>Required body</th>
-    <th>URL params</th>
-    <th>Description</th>
-  </tr>
-  <tr>
-    <td>POST</td>
-    <td>{user_id:"userId123"}</td>
-    <td></td>
-    <td>Makes an order based on the shopping cart the user_id has in redis</td>
-  </tr>
-  <tr>
-    <td>GET</td>
-    <td></td>
-    <td>/popular_products</td>
-    <td>Fetches most popular products given the last month </td>
-  </tr>
-  <tr>
-    <td>POST</td>
-    <td>{days:30}</td>
-    <td>/popular_products</td>
-    <td>Business endpoint. Updates the most post popular products based on specified amount of days</td>
-  </tr>
-</table> 
-
-### /recommended_items
- <table style="width:100%">
-  <tr>
-    <th></th>
-    <th>Required body</th>
-    <th>URL params</th>
-    <th>Description</th>
-  </tr>
-  <tr>
-    <td>GET</td>
-    <td></td>
-    <td>?item_no=</td>
-    <td>Retrieves a list of the 10 most bought items someone has bought with the item you send inn</td>
-  </tr>
-</table> 
-
 # Polyglot Databases
 
 ## Getting Started:
@@ -215,6 +139,78 @@ redis-cli --cluster create 127.0.0.1:7000 127.0.0.1:7001
 ```
 
 
+## Endpoint documentation
+Default url: localhost:5000
+
+### /shopping_cart
+ <table style="width:100%">
+  <tr>
+    <th></th>
+    <th>Required body</th>
+    <th>URL params</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>GET</td>
+    <td></td>
+    <td>?user_id=userid123</td>
+    <td>Get shoppingcart based on user ID</td>
+  </tr>
+  <tr>
+    <td>POST</td>
+    <td>{user_id:"userid123",<br/>product_no:"00004",<br/>qty:4}</td>
+    <td></td>
+    <td>Adds item/product to shopping cart</td>
+  </tr>
+  <tr>
+    <td>DELETE</td>
+    <td>{user_id:"userid123",<br/>product_no:"00004"}</td>
+    <td></td>
+    <td>Deletes item/product in shopping cart</td>
+  </tr>
+</table> 
 
 
+### /order
+ <table style="width:100%">
+  <tr>
+    <th></th>
+    <th>Required body</th>
+    <th>URL params</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>POST</td>
+    <td>{user_id:"userId123"}</td>
+    <td></td>
+    <td>Makes an order based on the shopping cart the user_id has in redis</td>
+  </tr>
+  <tr>
+    <td>GET</td>
+    <td></td>
+    <td>/popular_products</td>
+    <td>Fetches most popular products given the last month </td>
+  </tr>
+  <tr>
+    <td>POST</td>
+    <td>{days:30}</td>
+    <td>/popular_products</td>
+    <td>Business endpoint. Updates the most post popular products based on specified amount of days</td>
+  </tr>
+</table> 
 
+### /recommended_items
+ <table style="width:100%">
+  <tr>
+    <th></th>
+    <th>Required body</th>
+    <th>URL params</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>GET</td>
+    <td></td>
+    <td>?item_no=</td>
+    <td>Retrieves a list of the 10 most bought items someone has bought with the item you send inn</td>
+  </tr>
+</table> 
