@@ -63,9 +63,6 @@ class ShoppingCart(Resource):
     def __init__(self):
         # Instantiate databases
         self.redis = RedisDAO()
-        self.postgres = Postgres()
-        self.mongodb = MongoDB()
-        self.neo4j_dao = Neo4jDAO()
 
     def post(self):
         user_id = request.json.get("user_id")
