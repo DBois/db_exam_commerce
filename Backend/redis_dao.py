@@ -21,6 +21,11 @@ class RedisDAO:
         return self.conn.hgetall(f"{user_id}_cart")
 
     def get_shopping_cart(self, user_id):
+        # Set shoppingcart to expire in 60 days
+        ttl = timedelta(days=60)
+        self.conn.expire(f"{user_id}_cart", ttl)
+
+        # Return shopping_cart
         return self.conn.hgetall(f"{user_id}_cart")
 
     def delete_shopping_cart(self, user_id):
@@ -28,4 +33,9 @@ class RedisDAO:
 
     def delete_item(self, user_id, item_id):
         deleted_item = self.conn.hdel(f"{user_id}_cart", item_id)
+
+        # Set shoppingcart to expire in 60 days
+        ttl = timedelta(days=60)
+        self.conn.expire(f"{user_id}_cart", ttl)
+
         return deleted_item
