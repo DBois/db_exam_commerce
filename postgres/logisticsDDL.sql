@@ -57,13 +57,12 @@ alter table employee
 
 create table department_item
 (
-    "item_fk"       varchar(30) not null
-        constraint department_item_item_product_number_fk
-            references item,
-    "department_fk" integer     not null
-        constraint department_item_department_id_fk
-            references department,
-    qty             integer     not null
+    item_fk       varchar(30) not null,
+    department_fk integer     not null,
+    qty           integer     not null,
+    constraint pf primary key (item_fk, department_fk),
+    constraint department_item_item_product_number_fk foreign key (item_fk) references item,
+    constraint department_item_department_id_fk foreign key (department_item) references department,
 );
 
 alter table department_item

@@ -29,11 +29,11 @@ create index credit_card_expiration_date_uindex
 
 create table customer_credit_card
 (
-    customer_fk                 integer
-        constraint customer_credit_card_customer_id_fk
-            references customer,
+    customer_fk                 integer,
     credit_card_number          char(16) not null,
     credit_card_expiration_date char(4)  not null,
+    constraint pf primary key (customer_fk, credit_card_number, credit_card_expiration_date),
+    constraint  customer_credit_card_customer_id_fk foreign key (customer_fk) references customer,
     constraint customer_credit_card_credit_card_card_number_expiration_date_fk
         foreign key (credit_card_number, credit_card_expiration_date) references credit_card
 );
