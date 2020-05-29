@@ -272,4 +272,4 @@ Default url: localhost:5000
 
 ### Redis
 
-Set a password using the following command `requirepass password`
+Update the password used inside the [backend](./Backend/redis_dao.py)
