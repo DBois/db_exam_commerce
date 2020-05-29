@@ -62,10 +62,10 @@ create table department_product
     qty           integer     not null,
     constraint pf primary key (product_fk, department_fk),
     constraint department_product_product_product_number_fk foreign key (product_fk) references product,
-    constraint department_product_department_id_fk foreign key (department_product) references department,
+    constraint department_product_department_id_fk foreign key (department_fk) references department
 );
 
-alter table department_item
+alter table department_product
     owner to postgres;
 
 create table restock_logfile
