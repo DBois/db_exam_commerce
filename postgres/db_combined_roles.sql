@@ -37,7 +37,7 @@ grant select on all tables in schema public to read_only;
 -- Customer support access
 grant select, update on all sequences in schema public to customer_support;
 grant insert, select, update on all tables in schema public to customer_support;
-grant select on item to customer_support;
+grant select on product to customer_support;
 GRANT SELECT ON restock_logfile TO customer_support;
 -- HR access
 grant select on department to hr;
@@ -45,8 +45,8 @@ grant all privileges on employee, job_position to hr;
 grant all privileges on all sequences in schema public to hr;
 
 -- Department manager
-grant all privileges on department_item to department_manager;
+grant all privileges on department_product to department_manager;
 grant select, update on department to department_manager;
-grant insert, select on item to department_manager;
+grant insert, select on product to department_manager;
 GRANT SELECT ON restock_logfile TO department_manager;
 

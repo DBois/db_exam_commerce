@@ -9,21 +9,21 @@ title : Workflow for Selecting and Confirming an Order
 
 activate Actor
 loop Until user clicks "confirm order"
-Actor -> Backend : Looks at a specific item
+Actor -> Backend : Looks at a specific product
 
 
 activate Backend
-Backend -> Neo4j : Request recommended items
+Backend -> Neo4j : Request recommended product(s)
 activate Neo4j
-Neo4j -> Actor : Response with recommended \nitems
+Neo4j -> Actor : Response with \nrecommended product(s)
 deactivate Neo4j
 
 Actor -> Backend : User clicks "add to cart"
 
-Backend -> Redis : The given item is added to cart
+Backend -> Redis : The given product is added to cart
 activate Redis
 
-Redis -> Backend : Sends items from \ncart to backend
+Redis -> Backend : Sends product(s) from \ncart to backend
 end
 deactivate Redis
 deactivate Backend
@@ -34,7 +34,7 @@ activate Backend
 Backend -> PostgreSQL : Requests information on product \nnumber(s) from PostgreSQL
 
 activate PostgreSQL
-PostgreSQL -> Backend : Response with all information \nabout given item(s)
+PostgreSQL -> Backend : Response with all information \nabout given product(s)
 deactivate PostgreSQL
 
 Backend -> Actor : User sees confirm orderpage
@@ -42,12 +42,12 @@ deactivate Backend
 Actor -> Backend: User clicks "confirm order"
 activate Backend
 
-Backend -> Redis : Fetches users session data from cart
+Backend -> Redis : Fetches user's session data from cart
 activate Redis
-Redis -> Backend : Returns users session data
+Redis -> Backend : Returns user's session data
 
 group Two-Phased Commit
-Backend -> PostgreSQL : Prepares transaction to <b>update \n<b>quantity</b> on affected item(s)
+Backend -> PostgreSQL : Prepares transaction to <b>update \n<b>quantity</b> on affected product(s)
 activate PostgreSQL
 PostgreSQL -> Backend : Success
 
@@ -64,7 +64,7 @@ end
 Backend -> Redis : Deletes cart when used
 deactivate Redis
 
-Backend -> Neo4j : Creates order and relations to items
+Backend -> Neo4j : Creates order and relations to product(s)
 activate Neo4j
 Neo4j -> Backend : Success
 deactivate Neo4j
