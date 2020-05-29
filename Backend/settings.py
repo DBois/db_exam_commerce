@@ -1,5 +1,6 @@
 REDIS_HOST = 'localhost'
-REDIS_PORT = 6379
+REDIS_PORT = 7000
+REDIS_PASSWORD = "dbois"
 REDIS_DB = 1
 MONGODB_CONNECTION = ""
 NEO4J_URI = "bolt://localhost:7687"

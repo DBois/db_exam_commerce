@@ -69,7 +69,7 @@ class ShoppingCart(Resource):
         product_no = request.json.get("product_no")
         qty = request.json.get("qty")
 
-        shopping_cart = dict(self.redis.update_shopping_cart(user_id, product_no, qty).products())
+        shopping_cart = dict(self.redis.update_shopping_cart(user_id, product_no, qty).items())
 
         return shopping_cart
 
