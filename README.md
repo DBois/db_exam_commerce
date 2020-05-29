@@ -159,6 +159,13 @@ make test
 redis-cli --cluster create 127.0.0.1:7000 127.0.0.1:7001 127.0.0.1:7002 127.0.0.1:7003 127.0.0.1:7004 127.0.0.1:7005 --cluster-replicas 1
 ```
 
+## Running the backend
+Python 3.7 required
+```
+pip install -r <project root>/backend/requirements.txt
+python api.py  
+```
+
 ## Endpoint documentation
 
 Default url: localhost:5000
@@ -251,7 +258,6 @@ Default url: localhost:5000
 | dm_user        | dm       | **Department Manager:**<br> Has all privilages on department product table<br> Can select and update on department table<br> Can insert and select on product table<br> Can select on restock logfile table |
 
 ### Mongo
-
 <table>
   <thead>
     <tr>
@@ -300,6 +306,6 @@ View/terminate queries.</br></td>
     </tr>
   </tbody>
 </table>
-### Redis
 
+### Redis
 Update the password used inside the [backend on line 13](./Backend/redis_dao.py) to your password
