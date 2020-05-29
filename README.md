@@ -105,6 +105,8 @@ cluster-enabled yes
 cluster-config-file nodes.conf
 cluster-node-timeout 5000
 appendonly yes
+requirepass dbois
+masterauth dbois
 ```
 
 3. Download newest git repo of [unstable branch of redis ](https://github.com/antirez/redis)
@@ -125,13 +127,16 @@ make
 make test
 ```
 
-5. After `make test` open a terminal in each of the 7000-7005 folders and run the following command
+5. Now to secure your redis cluster :)  
+   open the `redis.conf` file inside the redis folder and uncomment the line that says `#masterauth <password>` and `requirepass foobar` and change the passwords to `dbois`.
+
+6. Now open a terminal in each of the 7000-7005 folders and run the following command
 
 ```
 ../redis/src/redis-server ./redis.conf
 ```
 
-6. Now you have the nodes ready to make a cluster. Run the following command to create the cluster:
+7. Now you have the nodes ready to make a cluster. Run the following command to create the cluster:
 
 ```
 redis-cli --cluster create 127.0.0.1:7000 127.0.0.1:7001 127.0.0.1:7002 127.0.0.1:7003 127.0.0.1:7004 127.0.0.1:7005 --cluster-replicas 1
@@ -249,9 +254,11 @@ Default url: localhost:5000
       <td>dbois</td>
       <td>Has read and write permissions for the db_exam_orders database</td>
     </tr>
-    
   </tbody>
 </table>
+
 ### Neo4j
 
 ### Redis
+
+Set a password using the following command `requirepass password`
