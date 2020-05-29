@@ -2,7 +2,7 @@
 
 ## Getting Started:
 
-**FIRST** [download the populate files here](https://mega.nz/file/7lwHBYaJ#4t0yXzKJJAZT39OMeG-EtxTZVHxX_WT_zW1GBAOaE4k)
+**FIRST** [download the populate files here](https://mega.nz/file/a1wyCQ7A#yaUh-QXSShYiSH0JleGcx2ml9Kd3DJ395FuSdSlXS8E)
 
 ### Setting up Postgres:
 
