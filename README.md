@@ -55,19 +55,30 @@ security:
 ### Setting up Neo4j
 
 -   Create database (we used 3.5.17)
--   Place 2_product.csv in import folder
--   Load in csv
+-   Place `Postgres\Logistics\2_product.csv` in the import folder
+-   Place `Neo4j\orders.json` in the import folder
+-   Download the APOC extension
+-   In your settings file add `apoc.import.file.enabled=true`
+-   Load in product csv:
 
-```
+```js
 LOAD CSV WITH HEADERS
 FROM "file:///2_product.csv"
 AS Line
 CREATE (c:Product {ProductNo: Line.product_number})
 ```
 
--   In-order to set-up the users and roles execute the following commands, one by one.
+(**Optional**) Create order and product nodes and relationships.
+**THIS MIGHT TAKE A LONG TIME. THIS IS ONLY NEEDED IF YOU WANT RELATIONSHIPS FOR PRODUCTS AND ORDERS**
+
+```c
+CALL apoc.periodic.iterate("CALL apoc.load.json(\"file:///orders.json\") YIELD value AS o RETURN o", "CREATE (oo:Order {InvoiceNo: o.InvoiceNo}) with oo, o UNWIND o.Products as pp match (ppp:Product {ProductNo: pp.ProductNo}) with oo, collect(ppp) as pppp FOREACH (p in pppp | CREATE (oo)-[:contains]->(p))", {batchSize: 100, parallel:true})
 
 ```
+
+-   In-order to set-up the users and roles execute the following commands, one by one.
+
+```c
 CALL dbms.security.createUser('admin_user', 'dbois', false);
 CALL dbms.security.addRoleToUser('admin', 'admin_user');
 
