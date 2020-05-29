@@ -10,7 +10,7 @@ class RedisDAO:
 
     def update_shopping_cart(self, user_id, product_no, qty):
 
-        # Update shoppingcart with new item and qty
+        # Update shoppingcart with new product and qty
         shopping_cart = {product_no: qty}
         self.conn.hmset(f"{user_id}_cart", shopping_cart)
 
@@ -31,11 +31,11 @@ class RedisDAO:
     def delete_shopping_cart(self, user_id):
         self.conn.delete(f"{user_id}_cart")
 
-    def delete_item(self, user_id, item_id):
-        deleted_item = self.conn.hdel(f"{user_id}_cart", item_id)
+    def delete_product(self, user_id, product_id):
+        deleted_product = self.conn.hdel(f"{user_id}_cart", product_id)
 
         # Set shoppingcart to expire in 60 days
         ttl = timedelta(days=60)
         self.conn.expire(f"{user_id}_cart", ttl)
 
-        return deleted_item
+        return deleted_product

@@ -55,14 +55,14 @@ security:
 ### Setting up Neo4j
 
 -   Create database (we used 3.5.17)
--   Place 2_item.csv in import folder
+-   Place 2_product.csv in import folder
 -   Load in csv
 
 ```
 LOAD CSV WITH HEADERS
-FROM "file:///2_item.csv"
+FROM "file:///2_products.csv"
 AS Line
-CREATE (c:Item {ProductNo: Line.product_number, Name: Line.name, Price: toInteger(Line.price)})
+CREATE (c:Product {ProductNo: Line.product_number, Name: Line.name, Price: toInteger(Line.price)})
 ```
 
 -   In-order to set-up the users and roles execute the following commands, one by one.
@@ -162,13 +162,13 @@ Default url: localhost:5000
     <td>POST</td>
     <td>{user_id:"userid123",<br/>product_no:"00004",<br/>qty:4}</td>
     <td></td>
-    <td>Adds item/product to shopping cart</td>
+    <td>Adds product to shopping cart</td>
   </tr>
   <tr>
     <td>DELETE</td>
     <td>{user_id:"userid123",<br/>product_no:"00004"}</td>
     <td></td>
-    <td>Deletes item/product in shopping cart</td>
+    <td>Deletes product in shopping cart</td>
   </tr>
 </table>
 
@@ -201,7 +201,7 @@ Default url: localhost:5000
   </tr>
 </table>
 
-### /recommended_items
+### /recommended_products
 
  <table style="width:100%">
   <tr>
@@ -213,8 +213,8 @@ Default url: localhost:5000
   <tr>
     <td>GET</td>
     <td></td>
-    <td>?item_no=</td>
-    <td>Retrieves a list of the 10 most bought items someone has bought with the item you send inn</td>
+    <td>?product_no=</td>
+    <td>Retrieves a list of the 10 most bought products someone has bought with the products you send inn</td>
   </tr>
 </table>
 
@@ -222,13 +222,13 @@ Default url: localhost:5000
 
 ### Postgres
 
-| Username       | Password | Description                                                                                                                                                                                           |
-| -------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| admin_user     | admin    | Has all Privilages on all tables and sequences                                                                                                                                                        |
-| read_only_user | readonly | Can select on all tables                                                                                                                                                                              |
-| cs_user        | cs       | **Customer Support:**<br> Can insert, select and update on all tables in customer<br> Can select on item table<br> Can select on restock logfile                                                      |
-| hr_user        | hr       | **Human Resources:**<br> Can select on department table<br> Has all privilages on employee and job table                                                                                              |
-| dm_user        | dm       | **Department Manager:**<br> Has all privilages on department item table<br> Can select and update on department table<br> Can insert and select on item table<br> Can select on restock logfile table |
+| Username       | Password | Description                                                                                                                                                                                                 |
+| -------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| admin_user     | admin    | Has all Privilages on all tables and sequences                                                                                                                                                              |
+| read_only_user | readonly | Can select on all tables                                                                                                                                                                                    |
+| cs_user        | cs       | **Customer Support:**<br> Can insert, select and update on all tables in customer<br> Can select on product table<br> Can select on restock logfile                                                         |
+| hr_user        | hr       | **Human Resources:**<br> Can select on department table<br> Has all privilages on employee and job table                                                                                                    |
+| dm_user        | dm       | **Department Manager:**<br> Has all privilages on department product table<br> Can select and update on department table<br> Can insert and select on product table<br> Can select on restock logfile table |
 
 ### Mongo
 

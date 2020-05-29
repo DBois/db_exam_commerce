@@ -28,14 +28,14 @@ class Order(Resource):
         user_id = request.json.get("user_id")
         redis_shopping_cart = self.redis.get_shopping_cart(user_id)
 
-        # Fetch the items based on the shopping_cart (PSQL)
-        items = self.postgres.fetch_shopping_cart_items(redis_shopping_cart)
+        # Fetch the products based on the shopping_cart (PSQL)
+        products = self.postgres.fetch_shopping_cart_products(redis_shopping_cart)
 
         # Build order
-        order = build_order(items, user_id)
+        order = build_order(products, user_id)
 
-        # Prepare transaction in postgres to count down qty of bought items
-        transaction_id = self.postgres.prepare_update_item_qty(order)
+        # Prepare transaction in postgres to count down qty of bought products
+        transaction_id = self.postgres.prepare_update_product_qty(order)
 
         # Create order on mongoDB
         mongo_id = self.mongodb.insert_order(order)
@@ -69,7 +69,7 @@ class ShoppingCart(Resource):
         product_no = request.json.get("product_no")
         qty = request.json.get("qty")
 
-        shopping_cart = dict(self.redis.update_shopping_cart(user_id, product_no, qty).items())
+        shopping_cart = dict(self.redis.update_shopping_cart(user_id, product_no, qty).products())
 
         return shopping_cart
 
@@ -80,21 +80,21 @@ class ShoppingCart(Resource):
     def delete(self):
         user_id = request.json.get("user_id")
         product_no = request.json.get("product_no")
-        return f"Removed {self.redis.delete_item(user_id, product_no)} item(s)"
+        return f"Removed {self.redis.delete_product(user_id, product_no)} product(s)"
 
 
-class RecommendedItems(Resource):
+class RecommendedProducts(Resource):
     def __init__(self):
         # Instantiate databases
         self.neo4j_dao = Neo4jDAO()
 
     def get(self):
-        item_no = request.args["item_no"]
-        items = self.neo4j_dao.execute_get_related_items(item_no)
-        return jsonify(items)
+        product_no = request.args["product_no"]
+        products = self.neo4j_dao.execute_get_related_products(product_no)
+        return jsonify(products)
 
 
-class MostPopularItems(Resource):
+class MostPopularProducts(Resource):
     def __init__(self):
         self.mongodb = MongoDB()
 
@@ -107,9 +107,9 @@ class MostPopularItems(Resource):
 
 
 api.add_resource(Order, '/order')
-api.add_resource(MostPopularItems, '/order/popular_products')
+api.add_resource(MostPopularProducts, '/order/popular_products')
 api.add_resource(ShoppingCart, '/shoppingcart')
-api.add_resource(RecommendedItems, '/recommendeditems')
+api.add_resource(RecommendedProducts, '/recommended_products')
 
 if __name__ == '__main__':
     app.run(debug=True)
