@@ -108,7 +108,7 @@ class MostPopularProducts(Resource):
 
 api.add_resource(Order, '/order')
 api.add_resource(MostPopularProducts, '/order/popular_products')
-api.add_resource(ShoppingCart, '/shoppingcart')
+api.add_resource(ShoppingCart, '/shopping_cart')
 api.add_resource(RecommendedProducts, '/recommended_products')
 
 if __name__ == '__main__':

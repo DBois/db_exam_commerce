@@ -5,7 +5,7 @@ import gorilla
 class Postgres:
     def __init__(self):
         # Define our connection string
-        conn_string = f"host='localhost' dbname='db_exam_logistics' user='postgres' password='{gorilla.POSTGRES_PASSWORD}'"
+        conn_string = f"host='localhost' dbname='db_exam_logistics' user='admin_user' password='admin'"
 
         # print the connection string we will use to connect
         # print("Connecting to database\n	->%s" % conn_string)
