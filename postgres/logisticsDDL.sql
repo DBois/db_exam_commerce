@@ -1,4 +1,4 @@
-drop table if exists department_item, employee, job_position, department, item, restock_logfile;
+drop table if exists department_product, employee, job_position, department, product, restock_logfile;
 
 create table department
 (
@@ -23,17 +23,17 @@ create table job_position
 alter table job_position
     owner to postgres;
 
-create table item
+create table product
 (
     product_number varchar(30) not null
-        constraint item_pk
+        constraint product_pk
             primary key,
     name           varchar(64) not null,
     description    text        not null,
     price          integer     not null
 );
 
-alter table item
+alter table product
     owner to postgres;
 
 create table employee
@@ -55,14 +55,14 @@ create table employee
 alter table employee
     owner to postgres;
 
-create table department_item
+create table department_product
 (
-    item_fk       varchar(30) not null,
+    product_fk       varchar(30) not null,
     department_fk integer     not null,
     qty           integer     not null,
-    constraint pf primary key (item_fk, department_fk),
-    constraint department_item_item_product_number_fk foreign key (item_fk) references item,
-    constraint department_item_department_id_fk foreign key (department_item) references department,
+    constraint pf primary key (product_fk, department_fk),
+    constraint department_product_product_product_number_fk foreign key (product_fk) references product,
+    constraint department_product_department_id_fk foreign key (department_product) references department,
 );
 
 alter table department_item
