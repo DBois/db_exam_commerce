@@ -6,7 +6,7 @@ from gorilla import NEO4J_PASSWORD
 class Neo4jDAO:
     def __init__(self):
         # driver = GraphDatabase.driver(uri, auth=("neo4j", "password"))
-        self._driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASSWORD), max_connection_lifetime=3600)
+        self._driver = GraphDatabase.driver(NEO4J_URI, auth=("admin_user", "dbois"), max_connection_lifetime=3600)
 
     def close(self):
         self._driver.close()

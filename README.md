@@ -138,7 +138,7 @@ make
 make test
 ```
 
-5. Now to secure your redis cluster :)  
+5. **Now to secure your redis cluster :)**  
    open the `redis.conf` file inside the redis folder and uncomment the line that says `#masterauth <password>` and `requirepass foobar` and change the passwords to `dbois`.
 
 6. Now open a terminal in each of the 7000-7005 folders and run the following command
@@ -270,6 +270,27 @@ Default url: localhost:5000
 
 ### Neo4j
 
-### Redis
-
-Set a password using the following command `requirepass password`
+<table>
+  <thead>
+    <tr>
+      <td>Username</td>
+      <td>Password</td>
+      <td>Description</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>admin_user</td>
+      <td>dbois</td>
+      <td>Read/write access to the data graph.</br>
+Set/delete access to indexes along with any other future schema constructs.</br>
+View/terminate queries.</br></td>
+    </tr>
+    <tr>
+      <td>reader_user</td>
+      <td>dbois</td>
+      <td>Read-only access to the data graph (all nodes, relationships, properties).
+</td>
+    </tr>
+  </tbody>
+</table>
