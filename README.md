@@ -69,7 +69,7 @@ CREATE (c:Product {ProductNo: Line.product_number})
 ```
 
 (**Optional**) Create order and product nodes and relationships.
-**THIS MIGHT TAKE A LONG TIME. THIS IS ONLY NEEDED IF YOU WANT RELATIONSHIPS FOR PRODUCTS AND ORDERS**
+**This might take at least 10-60 minutes**
 
 ```c
 CALL apoc.periodic.iterate("CALL apoc.load.json(\"file:///orders.json\") YIELD value AS o RETURN o", "CREATE (oo:Order {InvoiceNo: o.InvoiceNo}) with oo, o UNWIND o.Products as pp match (ppp:Product {ProductNo: pp.ProductNo}) with oo, collect(ppp) as pppp FOREACH (p in pppp | CREATE (oo)-[:contains]->(p))", {batchSize: 100, parallel:true})
