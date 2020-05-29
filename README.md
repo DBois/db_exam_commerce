@@ -232,6 +232,28 @@ Default url: localhost:5000
 
 ### Mongo
 
+<table>
+  <thead>
+    <tr>
+      <td>Username</td>
+      <td>Password</td>
+      <td>Description</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>dboisSupport</td>
+      <td>dbois</td>
+      <td>Can use the find and update commands on the orders collection in the db_exam_orders database</td>
+    </tr>
+    <tr>
+      <td>dboisAdmin</td>
+      <td>dbois</td>
+      <td>Has read and write permissions for the db_exam_orders database</td>
+    </tr>
+    
+  </tbody>
+</table>
 ### Neo4j
 
 ### Redis
