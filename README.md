@@ -27,6 +27,12 @@
 -   Take the `create_functions_procedures_triggers_customer.sql` and copy and run, the content into a new SQL editor on the customer database.
 -   Take the `create_functions_procedures_triggers_logistics.sql` and copy and run, the content into a new SQL editor on the logistics database.
 
+#### Setting max_prepared_transactions
+-   Go to the directory of your installed PostgreSQL folder. Then -> {your_version_folder} -> data. Open the "postgresql.conf" file.
+-     In windows this could be "C:\Program Files\PostgreSQL\12\data\postgresql.conf"
+-   Find the max_prepared_transactions. Outcomment it and set it to max_prepared_transactions = 5.
+
+
 ### Setting up MongoDB
 
 -   Download the CSV files mentioned above
