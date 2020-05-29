@@ -1,5 +1,5 @@
-DROP FUNCTION IF EXISTS get_qty_of_product, check_qty CASCADE;
-DROP PROCEDURE IF EXISTS add_employee, remove_employee, add_existing_product_to_stock, add_new_product_to_stock;
+DROP FUNCTION IF EXISTS get_qty_of_product, get_qty_of_product_in_department, check_qty CASCADE;
+DROP PROCEDURE IF EXISTS add_employee, remove_employee, add_existing_product_to_stock, add_new_product_to_stock, restock_product;
 DROP TRIGGER IF EXISTS qty_couter ON department_product CASCADE;
 
 -- Functions
