@@ -4,3 +4,4 @@ pymongo==3.8.0
 neo4j==1.7.6
 psycopg2==2.8.5
 Flask_RESTful==0.3.8
+redis-py-cluster==2.0.0
