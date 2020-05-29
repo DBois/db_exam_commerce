@@ -1,5 +1,4 @@
 import psycopg2
-import gorilla
 
 
 class Postgres:
@@ -48,7 +47,8 @@ class Postgres:
 
     def prepare_update_product_qty(self, order):
         query_str = "BEGIN; "
-        for product in order.get('products'):
+        print(order)
+        for product in order.get('Products'):
             query_str += f"UPDATE department_product SET qty = (qty - {product['ProductNo']}) " \
                          f"WHERE product_fk =\'{product['ProductNo']}\' AND department_fk = (SELECT id FROM department LIMIT 1); "
 

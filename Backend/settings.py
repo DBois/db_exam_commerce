@@ -4,5 +4,5 @@ REDIS_PASSWORD = "dbois"
 REDIS_DB = 1
 MONGODB_CONNECTION = ""
 NEO4J_URI = "bolt://localhost:7687"
-NEO4J_USER = "neo4j"
+NEO4J_USER = "admin_user"
 PSQL_CONNECTION = ""

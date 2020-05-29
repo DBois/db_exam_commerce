@@ -1,12 +1,11 @@
 from neo4j import GraphDatabase
 from settings import NEO4J_URI, NEO4J_USER
-from gorilla import NEO4J_PASSWORD
 
 
 class Neo4jDAO:
     def __init__(self):
         # driver = GraphDatabase.driver(uri, auth=("neo4j", "password"))
-        self._driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASSWORD), max_connection_lifetime=3600)
+        self._driver = GraphDatabase.driver(NEO4J_URI, auth=("admin_user", "dbois"), max_connection_lifetime=3600)
 
     def close(self):
         self._driver.close()
@@ -28,12 +27,13 @@ class Neo4jDAO:
         return related_products
 
 
+
 def create_order(tx, order):
     query_str_create_order = f"CREATE (a:Order {{ InvoiceNo: '{order.get('InvoiceNo')}'}})"
     query_str_match = "MATCH (a:Order)"
     query_str_where = f"WHERE a.InvoiceNo = '{order.get('InvoiceNo')}'"
     query_str_create = ""
-    for i, product in enumerate(order.get('products')):
+    for i, product in enumerate(order.get('Products')):
         var = chr(ord('b') + i)
         query_str_match += f" ,({var}:Product)"
         query_str_where += f" AND {var}.ProductNo = '{product.get('ProductNo')}'"
