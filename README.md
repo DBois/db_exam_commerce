@@ -2,7 +2,7 @@
 
 ## Getting Started:
 
-**FIRST** [download the populate CSV files here](https://mega.nz/file/msgFXCbL#63lEoxsXYK3GLsnmMUvU4Lu6rVXh6o6dL-H_a4NZLmM)
+**FIRST** [download the populate files here](https://mega.nz/file/DkwFQayC#tfyJtePPDGn6mnfSQhcPaGxHdINroDhHedQw-irSt0c)
 
 ### Setting up Postgres:
 
@@ -13,7 +13,7 @@
 
 -   Download the CSV files mentioned above
 -   Select your logistics database
--   Import the scripts inside `Postgres\Logistics` in the order they are named. 
+-   Import the scripts inside `Postgres\Logistics` in the order they are named.
 
 #### Setting up Customer database
 
@@ -22,6 +22,7 @@
 -   Import the scripts inside `Postgres\customer` in the order they are named.
 
 #### Setting up Roles, Functions and Triggers
+
 -   Take the `db_combined_roles.sql` and copy and run, the content into a new SQL editor, to setup users and roles.
 -   Take the `create_functions_procedures_triggers_customer.sql` and copy and run, the content into a new SQL editor on the customer database.
 -   Take the `create_functions_procedures_triggers_logistics.sql` and copy and run, the content into a new SQL editor on the logistics database.
@@ -138,11 +139,12 @@ redis-cli --cluster create 127.0.0.1:7000 127.0.0.1:7001
 --cluster-replicas 1
 ```
 
-
 ## Endpoint documentation
+
 Default url: localhost:5000
 
 ### /shopping_cart
+
  <table style="width:100%">
   <tr>
     <th></th>
@@ -168,10 +170,10 @@ Default url: localhost:5000
     <td></td>
     <td>Deletes item/product in shopping cart</td>
   </tr>
-</table> 
-
+</table>
 
 ### /order
+
  <table style="width:100%">
   <tr>
     <th></th>
@@ -197,9 +199,10 @@ Default url: localhost:5000
     <td>/popular_products</td>
     <td>Business endpoint. Updates the most post popular products based on specified amount of days</td>
   </tr>
-</table> 
+</table>
 
 ### /recommended_items
+
  <table style="width:100%">
   <tr>
     <th></th>
@@ -213,20 +216,19 @@ Default url: localhost:5000
     <td>?item_no=</td>
     <td>Retrieves a list of the 10 most bought items someone has bought with the item you send inn</td>
   </tr>
-</table> 
-
+</table>
 
 ## Users
 
 ### Postgres
 
-| Username     | Password | Description |
-| ----------- | ----------- | ----------- |
-| admin_user      | admin      | Has all Privilages on all tables and sequences |
-| read_only_user   | readonly        | Can select on all tables |
-| cs_user | cs | **Customer Support:**<br> Can insert, select and update on all tables in customer<br> Can select on item table<br>  Can select on restock logfile | 
-| hr_user   | hr        | **Human Resources:**<br> Can select on department table<br> Has all privilages on employee and job table |
-| dm_user   | dm       | **Department Manager:**<br> Has all privilages on department item table<br> Can select and update on department table<br> Can insert and select on item table<br> Can select on restock logfile table|
+| Username       | Password | Description                                                                                                                                                                                           |
+| -------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| admin_user     | admin    | Has all Privilages on all tables and sequences                                                                                                                                                        |
+| read_only_user | readonly | Can select on all tables                                                                                                                                                                              |
+| cs_user        | cs       | **Customer Support:**<br> Can insert, select and update on all tables in customer<br> Can select on item table<br> Can select on restock logfile                                                      |
+| hr_user        | hr       | **Human Resources:**<br> Can select on department table<br> Has all privilages on employee and job table                                                                                              |
+| dm_user        | dm       | **Department Manager:**<br> Has all privilages on department item table<br> Can select and update on department table<br> Can insert and select on item table<br> Can select on restock logfile table |
 
 ### Mongo
 
