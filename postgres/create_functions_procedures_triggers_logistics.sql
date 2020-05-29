@@ -1,6 +1,6 @@
 DROP FUNCTION IF EXISTS get_qty_of_product, check_qty CASCADE;
-DROP PROCEDURE IF EXISTS add_employee, remove_employee, add_existing_item_to_stock, add_new_item_to_stock;
-DROP TRIGGER IF EXISTS qty_couter ON department_item CASCADE;
+DROP PROCEDURE IF EXISTS add_employee, remove_employee, add_existing_product_to_stock, add_new_product_to_stock;
+DROP TRIGGER IF EXISTS qty_couter ON department_product CASCADE;
 
 -- Functions
 
@@ -9,61 +9,61 @@ CREATE OR REPLACE FUNCTION check_qty() RETURNS TRIGGER
 	
 	DECLARE 
 		int_department_fk integer;
-		var_item_fk varchar;
+		var_product_fk varchar;
 		int_qty int;
 	
 	BEGIN 
-		SELECT department_fk, item_fk, qty INTO int_department_fk, var_item_fk, int_qty FROM department_item di WHERE di.qty <= 2;
+		SELECT department_fk, product_fk, qty INTO int_department_fk, var_product_fk, int_qty FROM department_product dp WHERE dp.qty <= 10;
 	
-		IF var_item_fk IS NOT NULL THEN
-			RAISE NOTICE 'Product number: %, in Department: %, is running low! ', var_item_fk, int_department_fk;
+		IF var_product_fk IS NOT NULL THEN
+			RAISE NOTICE 'Product number: %, in Department: %, is running low! ', var_product_fk, int_department_fk;
 		END IF;
 	
 		RETURN NEW;
 	END
 $$;
 
-CREATE OR REPLACE FUNCTION get_qty_of_product(item_name varchar, item_number varchar DEFAULT '') 
- RETURNS TABLE (p_item_name varchar(64), p_item_fk varchar(30), p_department_fk int, p_qty int ) LANGUAGE plpgsql AS $$
+CREATE OR REPLACE FUNCTION get_qty_of_product(product_name varchar, product_number varchar DEFAULT '') 
+ RETURNS TABLE (p_product_name varchar(64), p_product_fk varchar(30), p_department_fk int, p_qty int ) LANGUAGE plpgsql AS $$
 
 BEGIN 
-	IF item_number = '' THEN
+	IF product_number = '' THEN
 	
-		-- Searching on item name
-		RETURN QUERY SELECT item.name, di.* FROM item 
-			JOIN department_item di ON di.item_fk = item.product_number
-			WHERE name ILIKE '%' || item_name || '%';
+		-- Searching on product name
+		RETURN QUERY SELECT product.name, dp.* FROM product 
+			JOIN department_product dp ON dp.product_fk = product.product_number
+			WHERE name ILIKE '%' || product_name || '%';
 	
 	ELSE
 	
 		-- Searching on product number
-		RETURN QUERY SELECT i.name, di.* FROM department_item di 
-			JOIN item i ON i.product_number = di.item_fk 
-			WHERE di.item_fk = item_number;
+		RETURN QUERY SELECT p.name, dp.* FROM department_product dp 
+			JOIN product p ON p.product_number = dp.product_fk 
+			WHERE dp.product_fk = product_number;
 
 	END IF;
 
 END
 $$;
 
-CREATE OR REPLACE FUNCTION get_qty_of_product_in_department(item_name varchar, department_id int, item_number varchar DEFAULT '')
-	RETURNS TABLE (p_item_name varchar(64), p_item_fk varchar(30), p_department_fk int, p_qty int ) LANGUAGE plpgsql AS $$
+CREATE OR REPLACE FUNCTION get_qty_of_product_in_department(product_name varchar, department_id int, product_number varchar DEFAULT '')
+	RETURNS TABLE (p_product_name varchar(64), p_product_fk varchar(30), p_department_fk int, p_qty int ) LANGUAGE plpgsql AS $$
 	
 BEGIN
 		
-	IF item_number = '' THEN
+	IF product_number = '' THEN
 	
-		-- Searching on item name
-		RETURN QUERY SELECT item.name, di.* FROM item 
-			JOIN department_item di ON di.item_fk = item.product_number
-			WHERE item.name ILIKE '%' || item_name || '%' AND di.department_fk = department_id;
+		-- Searching on product name
+		RETURN QUERY SELECT product.name, dp.* FROM product 
+			JOIN department_product dp ON dp.product_fk = product.product_number
+			WHERE product.name ILIKE '%' || product_name || '%' AND dp.department_fk = department_id;
 		
 	ELSE
 	
 		-- Searching on product number
-		RETURN QUERY SELECT i.name, di.* FROM department_item di 
-			JOIN item i ON i.product_number = di.item_fk 
-			WHERE di.item_fk = item_number AND di.department_fk = department_id;
+		RETURN QUERY SELECT p.name, dp.* FROM department_product dp 
+			JOIN product p ON p.product_number = dp.product_fk 
+			WHERE dp.product_fk = product_number AND dp.department_fk = department_id;
 
 	END IF;
 		
@@ -72,7 +72,7 @@ $$;
 
 -- Procedures
 
-CREATE OR REPLACE PROCEDURE restock_item(p_product_number varchar, p_department_number int, p_qty int) LANGUAGE plpgsql AS $$
+CREATE OR REPLACE PROCEDURE restock_product(p_product_number varchar, p_department_number int, p_qty int) LANGUAGE plpgsql AS $$
 	
 	DECLARE 
 
@@ -82,17 +82,17 @@ CREATE OR REPLACE PROCEDURE restock_item(p_product_number varchar, p_department_
 		IF p_qty < 0 THEN
 			RAISE NOTICE 'You can not add a negative quantity amount to the stock';
 		ELSE 
-			SELECT qty INTO current_qty FROM department_item di 
-			WHERE item_fk = p_product_number AND department_fk = p_department_number;
+			SELECT qty INTO current_qty FROM department_product dp 
+			WHERE product_fk = p_product_number AND department_fk = p_department_number;
 		
-			UPDATE department_item SET qty = (current_qty + p_qty) 
-			WHERE item_fk = p_product_number AND department_fk = p_department_number;
+			UPDATE department_product SET qty = (current_qty + p_qty) 
+			WHERE product_fk = p_product_number AND department_fk = p_department_number;
 		
-			IF (SELECT EXISTS(SELECT 1 FROM department_item WHERE item_fk = p_product_number AND department_fk = p_department_number)) THEN 
+			IF (SELECT EXISTS(SELECT 1 FROM department_product WHERE product_fk = p_product_number AND department_fk = p_department_number)) THEN 
 				-- logging
-				INSERT INTO restock_logfile(department_id, item_product_no, description) 
+				INSERT INTO restock_logfile(department_id, product_product_no, description) 
 				VALUES (p_department_number, p_product_number, 
-				format('Product number: %s, in Department: %s, has been restocked with %s items', p_product_number, p_department_number,  p_qty));
+				format('Product number: %s, in Department: %s, has been restocked with %s products', p_product_number, p_department_number,  p_qty));
 			END IF;
 		END IF;
 		
@@ -125,15 +125,15 @@ CREATE OR REPLACE PROCEDURE remove_employee(p_employee_id int) LANGUAGE plpgsql 
 $$;
 
 
-CREATE OR REPLACE PROCEDURE add_existing_item_to_stock(p_item_number varchar, p_department_number int, p_qty int) 
+CREATE OR REPLACE PROCEDURE add_existing_product_to_stock(p_product_number varchar, p_department_number int, p_qty int) 
 	LANGUAGE plpgsql AS $$
 	
 	BEGIN 
-		INSERT INTO department_item(item_fk, department_fk, qty) VALUES (p_item_number, p_department_number, p_qty);
+		INSERT INTO department_product(product_fk, department_fk, qty) VALUES (p_product_number, p_department_number, p_qty);
 	
 		EXCEPTION
 			WHEN SQLSTATE '23503' THEN 
-				RAISE NOTICE 'Product number: % or department number: %, does not exist', p_item_number, p_department_number;
+				RAISE NOTICE 'Product number: % or department number: %, does not exist', p_product_number, p_department_number;
 			WHEN OTHERS THEN
 				RAISE NOTICE '% %', SQLERRM, SQLSTATE;
 				
@@ -142,12 +142,12 @@ $$;
 
 
 
-CREATE OR REPLACE PROCEDURE add_new_item_to_stock(p_product_number varchar, p_name varchar, p_description TEXT, p_price int, p_department_number int, p_qty int) 
+CREATE OR REPLACE PROCEDURE add_new_product_to_stock(p_product_number varchar, p_name varchar, p_description TEXT, p_price int, p_department_number int, p_qty int) 
 	LANGUAGE plpgsql AS $$
  	
 	BEGIN
-		INSERT INTO item(product_number, name, description, price) VALUES (p_product_number, p_name, p_description, p_price);
-		INSERT INTO department_item(item_fk, department_fk, qty) VALUES (p_product_number, p_department_number, p_qty);
+		INSERT INTO product(product_number, name, description, price) VALUES (p_product_number, p_name, p_description, p_price);
+		INSERT INTO department_product(product_fk, department_fk, qty) VALUES (p_product_number, p_department_number, p_qty);
  	
  		EXCEPTION
  			WHEN SQLSTATE '23505' THEN
@@ -162,5 +162,5 @@ CREATE OR REPLACE PROCEDURE add_new_item_to_stock(p_product_number varchar, p_na
 
 -- Triggers
 
-CREATE TRIGGER qty_counter AFTER UPDATE ON department_item 
+CREATE TRIGGER qty_counter AFTER UPDATE ON department_product 
 FOR EACH ROW EXECUTE FUNCTION check_qty();
