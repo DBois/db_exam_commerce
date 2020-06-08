@@ -40,6 +40,14 @@ def create_order(tx, order):
         query_str_create += f"CREATE (a)-[:contains]->({var}) "
 
     query_str = f"{query_str_match} {query_str_where} {query_str_create}"
+
+    # Print query strings
+    print("Neo4j create order string: ")
+    print(query_str_create_order)
+    print("Neo4j create relations string")
+    print(query_str)
+
+    # Execute queries
     tx.run(query_str_create_order)
     tx.run(query_str)
 

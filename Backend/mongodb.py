@@ -15,7 +15,7 @@ class MongoDB:
         except Exception as ex:
             raise ex
 
-    def generate_most_popular_products(self, days):
+    def generate_most_popular_products(self, days=30):
         try:
             map = Code("function () {"
                        "const products = this.Products;"

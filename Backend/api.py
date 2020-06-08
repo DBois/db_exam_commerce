@@ -56,7 +56,7 @@ class Order(Resource):
         self.postgres.close_connection()
         self.mongodb.close_connection()
 
-        return return_order
+        return jsonify(return_order)
 
 
 class ShoppingCart(Resource):
@@ -102,8 +102,11 @@ class MostPopularProducts(Resource):
         return self.mongodb.get_most_popular_products_30days()
 
     def post(self):
-        days = request.json.get('days');
-        return self.mongodb.generate_most_popular_products(days)
+        if request.json:
+            days = request.json.get('days');
+            return self.mongodb.generate_most_popular_products(days)
+        else:
+            return self.mongodb.generate_most_popular_products()
 
 
 api.add_resource(Order, '/order')
