@@ -12,11 +12,11 @@ class Neo4jDAO:
 
     def execute_create_order(self, order):
         with self._driver.session() as session:
-            session.read_transaction(create_order, order)
+            session.write_transaction(create_order, order)
 
     def execute_create_product(self, product):
         with self._driver.session() as session:
-            session.read_transaction(create_product, product)
+            session.write_transaction(create_product, product)
 
     def execute_get_related_products(self, product_no):
         related_products = []
