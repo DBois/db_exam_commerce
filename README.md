@@ -156,7 +156,7 @@ make test
 7. Now you have the nodes ready to make a cluster. Run the following command to create the cluster:
 
 ```
-redis-cli --cluster create 127.0.0.1:7000 127.0.0.1:7001 127.0.0.1:7002 127.0.0.1:7003 127.0.0.1:7004 127.0.0.1:7005 --cluster-replicas 1
+redis-cli --cluster create 127.0.0.1:7000 127.0.0.1:7001 127.0.0.1:7002 127.0.0.1:7003 127.0.0.1:7004 127.0.0.1:7005 --cluster-replicas 1 -a dbois
 ```
 
 ## Running the backend
