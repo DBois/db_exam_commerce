@@ -99,14 +99,19 @@ class MostPopularProducts(Resource):
         self.mongodb = MongoDB()
 
     def get(self):
-        return self.mongodb.get_most_popular_products_30days()
+        res = self.mongodb.get_most_popular_products_30days()
+        self.mongodb.close_connection()
+        return res
 
     def post(self):
         if request.json:
             days = request.json.get('days');
-            return self.mongodb.generate_most_popular_products(days)
+            res = self.mongodb.generate_most_popular_products(days)
         else:
-            return self.mongodb.generate_most_popular_products()
+            res = self.mongodb.generate_most_popular_products()
+
+        self.mongodb.close_connection()
+        return res
 
 
 api.add_resource(Order, '/order')

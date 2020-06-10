@@ -38,11 +38,11 @@ class Postgres:
                 "Name": fetched_product[1],
                 "Description": fetched_product[2],
                 "UnitPrice": fetched_product[3],
-                "Quantity": shopping_cart[fetched_product[0]]
+                "Quantity": int(shopping_cart[fetched_product[0]])
             }
             products.append(product)
 
-        self.conn.commit()
+        #self.conn.commit()
         return products
 
     def prepare_update_product_qty(self, order):
