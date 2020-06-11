@@ -49,7 +49,7 @@ class Postgres:
         query_str = "BEGIN; "
         print(order)
         for product in order.get('Products'):
-            query_str += f"UPDATE department_product SET qty = (qty - {product['ProductNo']}) " \
+            query_str += f"UPDATE department_product SET qty = (qty - {product['Quantity']}) " \
                          f"WHERE product_fk =\'{product['ProductNo']}\' AND department_fk = (SELECT id FROM department LIMIT 1); "
 
         invoice_no = order.get('InvoiceNo')
